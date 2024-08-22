@@ -1,0 +1,17 @@
+<!-- confirm_association.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Associação</title>
+</head>
+<body>
+    <h1>Confirmação de Associação</h1>
+    <p>O email {{ email }} já está associado a uma conta. Deseja associar este login social?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="action" value="confirm">Sim, associar</button>
+        <button type="submit" name="action" value="cancel">Não, cancelar</button>
+    </form>
+</body>
+</html>

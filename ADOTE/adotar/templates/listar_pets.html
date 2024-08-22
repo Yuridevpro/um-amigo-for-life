@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link href="{% static 'adotar/css/listar_pets.css' %}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="{% static 'adotar/css/listar_pets_mdq.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
+
+{% block title %}Listar Pets{% endblock %}
+
+{% block content %}
+
+
+    <div class="wrapper">
+        <div class="listar-pets-box">
+            {% if messages %}
+                <br>
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="form-block bg-custom p-4">
+                <div class="header-box">
+                    Adote seu pequeno amigo
+                </div>
+                <hr style="color: gray;">
+                <br>
+                
+                <form action="{% url 'listar_pets' %}" method="GET">
+                    <div class="filtro-box">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select class="form-select form-control" id="estado" name="estado">
+                                    <option value="">Todos os Estados</option>
+                                    {% for estado in estados %}
+                                        <option value="{{ estado.id }}" {% if estado.id == estado %}selected{% endif %}>{{ estado.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <select class="form-select form-control" id="cidade" name="cidade" style="margin-top: 8.50px;">
+                                    <option value="">Todas as Cidades</option>
+                                    {% for cidade in cidades %}
+                                        <option value="{{ cidade.nome }}" {% if cidade_nome == cidade.nome %}selected{% endif %}>{{ cidade.nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <select class="form-select form-control" name="tamanho">
+                                    <option value="">Todos os Tamanhos</option>
+                                    {% for choice in choices_tamanho %}
+                                        <option value="{{ choice.0 }}" {% if tamanho == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <select class="form-select form-control" name="especie" style="margin-top: 7px;">
+                                    <option value="">Todas as Espécies</option>
+                                    {% for choice in choices_especie %}
+                                        <option value="{{ choice.0 }}" {% if especie == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-12 text-center">
+                                <input type="submit" class="btn btn-custom-primary" value="FILTRAR">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br>
+            <div class="pet-list d-flex flex-wrap">
+                {% for pet in pets %}
+                    <div class="pet-item col-6">
+                        <div class="card">
+                                {% if pet.foto_principal %}
+                                    <img src="{{ pet.foto_principal.url }}" alt="Imagem do Pet">
+                                {% else %}
+                                    <p>Imagem principal não disponível.</p>
+                                {% endif %}
+                            <div class="card-body">
+                                <span class="icone-pets">
+                                    {% if pet.especie == 'Cachorro' %}
+                                        {% if pet.sexo == 'Macho' %}
+                                            <i class="fas fa-dog male icon"></i>
+                                        {% else %}
+                                            <i class="fas fa-dog female icon"></i>
+                                        {% endif %}
+                                    {% elif pet.especie == 'Gato' %}
+                                        {% if pet.sexo == 'Macho' %}
+                                            <i class="fas fa-cat male icon"></i>
+                                        {% else %}
+                                            <i class="fas fa-cat female icon"></i>
+                                        {% endif %}
+                                    {% endif %}
+                                </span>
+                                <div class="informacoes-pet">
+                                    <h3 class="card-title {% if pet.sexo == 'Macho' %}macho{% elif pet.sexo == 'Fêmea' %}femea{% endif %}">{{ pet.nome_pet }}</h3>
+                                    <h6 class="card-text">
+                                        {{ pet.usuario.userprofile.estado_nome }} / {{ pet.usuario.userprofile.cidade_nome }}
+                                    </h6>
+                                </div>
+                                
+                                <div class="descricao">
+                                    <span class="short-description">{{ pet.historia_pet|truncatechars_html:90 }}</span>
+                                </div>
+                                <div class="paws">
+                                    <div class="pata grande {% if pet.tamanho == 'Grande' %}animated{% endif %}">
+                                        <i class="fas fa-paw" style="color: #000000; font-size: 18px;"></i>
+                                    </div>
+                                    <div class="pata medio {% if pet.tamanho == 'Médio' %}animated{% endif %}">
+                                        <i class="fas fa-paw" style="color: #000000; font-size: 16px;"></i>
+                                    </div>
+                                    <div class="pata pequeno {% if pet.tamanho == 'Pequeno' %}animated{% endif %}">
+                                        <i class="fas fa-paw" style="color: #000000; font-size: 12px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tag">
+                                {% if pet.status == "P" %}
+                                    <span class="badge text-bg-primary">Para adoção</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center btnadotar">
+                            <a href="{% url 'ver_pet' pet.id %}">Adotar</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+            <br>
+            <nav aria-label="Page navigation example" style="display: flex; justify-content: center; margin-top: 20px;" class="nav-pagination">
+                <ul class="pagination">
+                    <li class="page-item {% if pets.has_previous %} '{% else %}disabled{% endif %}' ">
+                        <a class="page-link" href="{% if pets.has_previous %}?page={{ pets.previous_page_number }}{% else %}#{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                    {% for num in page_numbers %}
+                        {% if num == "..." %}
+                            <li class="page-item disabled"><span class="page-link">…</span></li>
+                        {% else %}
+                            <li class="page-item {% if pets.number == num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="page-item {% if pets.has_next %} "{% else %}disabled{% endif %}">
+                        <a class="page-link" href="{% if pets.has_next %}?page={{ pets.next_page_number }}{% else %}#{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+                type: 'GET',
+                dataType: 'json',
+                success: function(estados) {
+                    var selectEstado = $('#estado');
+                    estados.sort(function(a, b) {
+                        return a.nome.localeCompare(b.nome);
+                    });
+                    $.each(estados, function(index, estado) {
+                        selectEstado.append('<option value="' + estado.id + '">' + estado.nome + '</option>');
+                    });
+                    selectEstado.change();
+                }
+            });
+
+            $('#estado').change(function() {
+                var estadoId = $(this).val();
+                var selectCidade = $('#cidade');
+                selectCidade.empty();
+                selectCidade.append('<option value="">Todas as Cidades</option>');
+                if (estadoId) {
+                    $.ajax({
+                        url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados/' + estadoId + '/municipios',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(cidades) {
+                            cidades.sort(function(a, b) {
+                                return a.nome.localeCompare(b.nome);
+                            });
+                            $.each(cidades, function(index, cidade) {
+                                selectCidade.append('<option value="' + cidade.nome + '">' + cidade.nome + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('.alert').delay(2500).slideUp(400);
+        });
+    </script>
+{% endblock %}

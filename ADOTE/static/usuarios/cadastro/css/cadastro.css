@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+
+
+.bg-side {
+  background-color: #7B50A6;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff; /* Tom de vinho */
+  text-shadow: 0 0 8px rgba(255, 119, 255, 0.284), 
+               0 0 15px rgba(255, 119, 255, 0.255), 
+               0 0 20px rgba(255, 119, 255, 0.204); /* Efeito de brilho */
+}
+
+.header {
+  border-bottom: 1px solid white;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: center;
+  color: #ffffff; /* Tom de vinho */
+  text-shadow: 0 0 8px rgba(255, 119, 255, 0.284), 
+               0 0 15px rgba(255, 119, 255, 0.255), 
+               0 0 20px rgba(255, 119, 255, 0.204); /* Efeito de brilho */
+               
+  font-family: "Patua One", serif;
+  font-size: 45px;
+}
+
+.body-form {
+  padding: 20px;
+  background-color: #a4a4b865;
+  box-shadow: 2px 2px 10px rgba(144, 133, 133, 0.334); /* Ajuste na sombra */
+  border-radius: 10px;
+  width: 100%;
+}
+
+
+.btn-custom-primary {
+  background-color: #AA2293;
+  border: none;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-custom-primary:hover {
+  background-color: #7B50A6;
+}
+
+.link-float {
+  display: block;
+  margin-top: 10px;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.link-float:hover {
+  text-decoration: underline;
+}
+
+.fundo {
+  background-image: url('img/fundo.png'); 
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+
+.logo-top {
+  margin-top: 0;
+  max-width: 200px;
+}
+
+@keyframes moving-shadow {
+  0%, 100% {
+    text-shadow: 1px 1px 5px #FF0000;
+  }
+  25% {
+    text-shadow: -1px -1px 5px rgba(255, 119, 255, 0.8);
+  }
+  50% {
+    text-shadow: -1px 1px 5px rgba(255, 119, 255, 0.8);
+  }
+  75% {
+    text-shadow: 1px -1px 5px #FF0000;
+  }
+}
+
+.highlight-text {
+  font-family: Fonte_subtitulo_pat, sans-serif;
+  font-size: 35px;
+  animation: moving-shadow 1.8s infinite;
+  margin-top: 20px;
+}

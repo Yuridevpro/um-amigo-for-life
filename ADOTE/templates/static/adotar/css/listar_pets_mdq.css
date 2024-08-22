@@ -1,0 +1,87 @@
+ /* Estilos para telas móveis de todos os tipos */
+ @media only screen and (max-width: 768px) {
+    .pet-item {
+        width: calc(40% - 5px); /* Duas colunas, com margens */
+        min-width: 180px; /* Remove a limitação mínima de largura */
+        max-height: 380px; /* Remove a limitação mínima 
+        margin-bottom: 20px; /* Espaçamento entre os cards */
+    }
+
+
+
+    .card {
+        width: calc(100% + 17px);
+        min-width: auto;
+       
+    }
+
+    .pet-list {
+        margin-left: -20px;
+        width: calc(100% + 40px);
+        gap: 40px 15px; 
+    }
+    
+ 
+
+
+    .pet-item img {
+        width: 100%; /* Ocupa toda a largura do contêiner */
+        height: 200px; /* Altura automática proporcional à largura */
+        border-radius: 10px; /* Adiciona um pequeno raio de borda */
+    }
+    
+    .fundo {
+        height: 250px; /* Ajusta a altura do fundo para dispositivos móveis */
+    }
+
+    .filtro-box {
+        width: 90%; /* Ajusta a largura para ocupar mais espaço na tela estreita */
+        padding: 10px; /* Reduz o espaçamento interno */
+    }
+
+    .paws {
+        display: none;
+        }
+ 
+    .descricao{
+        display: none;
+        
+    }
+    .icon {
+        font-size: 25px;
+        
+    }
+    .informacoes-pet{
+        margin-top: -35px;
+    }
+    .icone-pets{
+        display: block;
+        margin-top: -12px;
+        margin-left: -15px;
+        
+    }
+    .card-text{
+    font-size: 12px;
+    }
+    .fundo{
+        display: none;
+    }
+
+    .tag {
+        margin-bottom: 5px;
+        top: 310px;
+        right: 35px;
+        font-size: 13px;
+    }   
+
+    .card-title{
+        margin-top: 10px;
+        font-size: 15px;
+    }
+    .form-control{
+        margin-top: 14px;
+    }
+
+   
+
+}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'mdq_base.css' %}" rel="stylesheet">
+<link href="{% static 'base.css' %}" rel="stylesheet">
+
+<style>
+    /* Para telas móveis de todos os tipos */
+    @media only screen and (max-width: 768px) {
+        .header-box {
+            font-size: 35px;
+            width: 65vw;
+        }
+        .box {
+            width: 100vw;
+        }
+    }
+    .terms-section {
+        background-color: none;
+        padding: 20px;
+        margin-top: 20px;
+        max-width: 800px;
+        margin: auto;
+    }
+    .terms-section p {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #3b1068; /* Cor do texto */
+        margin-bottom: 15px;
+    }
+    .terms-section p strong {
+        color: #3b1068; /* Cor do texto */
+    }
+    .terms-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #3b1068; /* Cor do título */
+    }
+</style>
+{% endblock %}
+
+{% block title %}Termos de Serviço{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="box">
+        {% if messages %}
+            <br>
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="header-box">
+            Termos de Serviço
+        </div>
+        <hr>
+
+        <!-- Seção Termos de Serviço -->
+        <div class="terms-section">
+            <p>Por favor, leia atentamente os seguintes termos de serviço:</p>
+            
+            <h2>Definições:</h2>
+            <p><strong>Plataforma:</strong> Refere-se ao site de adoção de pets, onde os usuários podem anunciar e adotar pets.</p>
+            <p><strong>Usuário:</strong> Qualquer pessoa que tenha acesso à plataforma, seja como visitante, usuário registrado ou administrador.</p>
+            <p><strong>Conta:</strong> Uma conta de usuário registrada na plataforma, que é criada por um usuário mediante o fornecimento de informações pessoais e/ou empresariais.</p>
+            <p><strong>Conteúdo do Usuário:</strong> Todo e qualquer conteúdo, incluindo, mas não se limitando a textos, imagens, vídeos, arquivos, postagens e comentários, criado, publicado ou compartilhado por um usuário na plataforma.</p>
+            <p><strong>Política de Privacidade:</strong> Um documento que descreve como os dados pessoais dos usuários são coletados, usados, armazenados e protegidos pela sua empresa, conforme exigido pelas leis de proteção de dados aplicáveis.</p>
+            <p><strong>Termos de Serviço:</strong> O contrato legal entre a sua empresa e os usuários da plataforma, que estabelece os termos e condições de uso da plataforma.</p>
+            <p><strong>Propriedade Intelectual:</strong> Direitos legais sobre criações da mente, como marcas registradas, direitos autorais e patentes, que são protegidos por lei.</p>
+            <p><strong>Moderação:</strong> A ação de monitorar, revisar e, se necessário, remover conteúdos da plataforma que violem os termos de serviço ou as políticas da empresa.</p>
+            <p><strong>Suspensão de Conta:</strong> A ação de desativar temporariamente o acesso de um usuário à sua conta na plataforma, geralmente como resultado de violações dos termos de serviço.</p>
+            <p><strong>Rescisão de Conta:</strong> A ação de encerrar permanentemente o acesso de um usuário à sua conta na plataforma, geralmente como resultado de violações graves dos termos de serviço.</p>
+            
+            <h2>Aceitação:</h2>
+            <p>Ao acessar ou usar esta plataforma, você concorda em obedecer a estes termos de serviço. Se você não concordar com qualquer parte destes termos, por favor, não use ou acesse a plataforma. O uso contínuo desta plataforma após quaisquer alterações feitas aos termos de serviço será considerado como aceitação dessas mudanças.</p>
+            
+            <h2>Obrigações do Usuário:</h2>
+            <p>Como usuário desta plataforma, você concorda em cumprir todas as leis aplicáveis e a não utilizar a plataforma para qualquer finalidade ilegal ou não autorizada. Você é responsável por todas as atividades que ocorrem sob sua conta e concorda em não compartilhar sua senha ou acessar a conta de outra pessoa sem permissão.</p>
+            
+            <h2>Propriedade Intelectual:</h2>
+            <p>Todos os direitos de propriedade intelectual relacionados a esta plataforma, incluindo marcas registradas, direitos autorais e patentes, pertencem à nossa empresa ou aos seus licenciadores. Nenhum conteúdo desta plataforma pode ser reproduzido, distribuído ou utilizado de qualquer forma sem autorização prévia por escrito. Além disso, os usuários concordam em não reproduzir, imitar ou utilizar de qualquer forma a ideia, conceitos, características ou funcionalidades exclusivas da plataforma para criar uma plataforma semelhante ou competidora, seja para fins comerciais ou não.</p>
+            
+            <h2>Privacidade e Proteção de Dados:</h2>
+            <p>Valorizamos sua privacidade e estamos comprometidos em proteger seus dados pessoais. Ao utilizar esta plataforma, você concorda com a coleta, uso e divulgação de suas informações conforme descrito em nossa Política de Privacidade. Recomendamos que você leia atentamente nossa política de privacidade para entender como suas informações são tratadas.</p>
+            
+            <h2>Rescisão e Suspensão:</h2>
+            <p>Reservamo-nos o direito de suspender ou encerrar sua conta e acesso à plataforma a qualquer momento, por qualquer motivo, sem aviso prévio ou responsabilidade. Você concorda que não seremos responsáveis por você ou qualquer terceiro por qualquer modificação, suspensão ou encerramento de sua conta ou acesso à plataforma.</p>
+            
+            <h2>Limitação de Responsabilidade:</h2>
+            <p>Você concorda que sua utilização desta plataforma é por sua própria conta e risco. Em nenhuma circunstância seremos responsáveis por quaisquer danos diretos, indiretos, incidentais, especiais ou consequenciais, incluindo, mas não se limitando a, perda de lucros, receitas, dados ou uso.</p>
+            
+            <h2>Resolução de Disputas:</h2>
+            <p>Qualquer disputa ou controvérsia decorrente ou relacionada ao uso desta plataforma será resolvida por meio de negociação boa-fé. Se as partes não conseguirem resolver a disputa por meio de negociação, concordam em submeter a questão à mediação, arbitragem ou litígio, conforme estabelecido nestes termos de serviço.</p>
+            
+            <h2>Modificações e Atualizações:</h2>
+            <p>Reservamo-nos o direito de modificar ou atualizar estes termos de serviço a qualquer momento, sem aviso prévio. Quaisquer alterações entrarão em vigor imediatamente após a publicação nesta página. É sua responsabilidade verificar periodicamente esta página para ficar atualizado sobre quaisquer mudanças.</p>
+            
+            <h2>Lei Aplicável:</h2>
+            <p>Estes termos de serviço serão regidos e interpretados de acordo com as leis do Brasil sem levar em consideração seus conflitos de disposições legais. Você concorda em submeter-se à jurisdição exclusiva dos tribunais localizados no Brasil.</p>
+            
+            <h2>Invalidade Parcial:</h2>
+            <p>Se qualquer disposição destes termos de serviço for considerada inválida ou inexequível por um tribunal de jurisdição competente, as partes concordam que o tribunal deve se esforçar para dar efeito às intenções das partes conforme refletido na disposição, e as demais disposições destes termos permanecerão em pleno vigor e efeito.</p>
+            
+            <h2>Acordo Integral:</h2>
+            <p>Estes termos de serviço representam o acordo integral entre você e nós em relação ao uso desta plataforma e substituem todos os acordos anteriores e contemporâneos relacionados ao mesmo assunto.</p>
+            
+            <p>Estes termos de serviço constituem um acordo legal entre você e A FRIEND FOR A LIFE e/ou o principal responsável pela mesma em relação ao seu uso. Ao acessar ou utilizar a plataforma, você concorda com estes termos de serviço. Se você não concordar com qualquer parte destes termos, por favor, não use a plataforma.</p>
+
+            <h2>Exclusão de Conta</h2>
+                <p>Para excluir sua conta, siga os seguintes passos:</p>
+                <ol>
+                    <li>Clique no ícone de perfil na navbar.</li>
+                    <li>Acesse "Editar Perfil".</li>
+                    <li>Clique no link "Remover Conta" no canto inferior direito em azul.</li>
+                </ol>
+                <p>Lembre-se de que, ao excluir sua conta, todos os seus dados serão removidos permanentemente e não poderão ser recuperados.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

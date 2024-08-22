@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esqueci minha senha</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'usuarios/cadastro/css/cadastro.css' %}" rel="stylesheet">
+    <link href="{% static 'usuarios/cadastro/css/cadastro_mdq.css' %}" rel="stylesheet">
+    <link href="{% static 'usuarios/criar_senha/css/criar_senha.css' %}" rel="stylesheet">
+    
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5 col-12 bg-side">
+            <div class='header'>
+                <img class="logo-top" src="{% static 'usuarios/cadastro/css/img/logo.png' %}">
+                <header>A friend for life</header>
+            </div>
+            <div class="body-form">
+                {% if messages %}
+                    <br>
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <h2>Criar Nova senha</h2>
+                
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="uidb64" value="{{ uidb64 }}">
+                    <input type="hidden" name="token" value="{{ token }}">
+                    <div class="form-group">
+                        <label for="senha_nova">Nova Senha:</label>
+                        <input type="password" class="form-control" id="senha_nova" name="senha_nova" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="confirmar_senha">Confirmar Nova Senha:</label>
+                        <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" required>
+                    </div>
+                    <button type="submit" class="btn btn-custom-primary" style="margin: auto; margin-top: 20px;" >Salvar</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-7 col-12 fundo">
+            <div class="side-logo">
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

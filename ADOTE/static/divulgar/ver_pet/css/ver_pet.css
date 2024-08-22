@@ -1,0 +1,203 @@
+.header-box {
+    text-align: center;
+    font-size: 2.5rem; /* Ajuste o tamanho da fonte para responsividade */
+    padding: 20px 0;
+}
+
+
+
+.card {
+display: flex;
+align-items: flex-start; /* Alinhamento do topo */
+justify-content: center;
+border: none;
+gap: 20px;
+flex-direction: row; /* Mantém a direção na horizontal */
+width: 100%;
+padding: 20px;
+margin: auto;
+background-color: #E8E8EE;
+}
+
+    .imagens_pet {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        border-radius: 10px;
+        overflow: hidden;
+        padding: 20px;
+        display: flex;
+        flex-direction: column; /* Empilha as imagens */
+    }
+
+    .imagem_principal img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        margin: auto;
+        overflow: hidden;
+        margin: auto;
+    }
+
+    .imagem_secundaria {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap; /* Permite que os elementos quebrem a linha */
+        justify-content: space-between; /* Distribui as imagens com espaçamento igual */
+        gap: 10px; /* Espaçamento entre as imagens */
+    }
+
+    .imagem_secundaria img {
+        width: 80px; /* Cada imagem ocupa 100% da largura do seu container */
+        height: 80px; /* Define a altura fixa para todos os blocos */
+        object-fit: cover; /* Ajusta a imagem para cobrir todo o espaço sem distorções */
+        border-radius: 10px; /* Define cantos arredondados */
+        cursor: pointer; /* Muda o cursor para indicar que a imagem pode ser clicada */
+        
+    }
+
+
+
+
+
+.informacoes {
+    width: 55%; /* Ajuste para ocupar 50% da largura */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: none;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: none;
+    
+}
+
+.outras-informacoes {
+    width: 75%; /* Ajuste para ocupar 50% da largura */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: none;
+    border-radius: 10px;
+    padding: 20px;
+
+  
+}
+
+.info-block {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.info-block h4, .info-block h5 { /* Estilos para h4 e h5 */
+    margin-bottom: 10px;
+}
+
+.info-item {
+    margin-bottom: 10px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-list li {
+    margin-bottom: 5px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.info-columns {
+    display: flex;
+    flex-direction: row; /* Mantém a direção na coluna */
+    align-items: flex-start; /* Alinhamento do topo */
+    justify-content: center;
+    gap: 20px;
+    width: 100%; /* Ajuste para ocupar 100% da largura */
+    margin: auto;
+}
+
+.info-column {
+    flex: 1;
+    min-width: 0; /* Para permitir que os elementos se ajustem responsivamente */
+    width: 50%; /* Cada coluna ocupa 100% da largura */
+}
+
+.detalhes_pet {
+    background-color: none;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pet-content {
+    background-color: none;
+    padding: 20px;
+}
+
+
+
+.pet-story-container {
+display: flex;
+justify-content: center;
+align-items: center;
+margin: auto;
+max-width: 60%;
+min-width: 60%;
+}
+
+.pet-story {
+background-color: white;
+border-radius: 10px;
+padding: 20px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+margin: 10px 0;
+line-height: 2;
+word-break: break-all; /* Quebra palavras para evitar overflow */
+}
+
+
+
+
+.situacao_pet {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-primary{
+    display: block;
+    margin: auto;
+}
+
+/* Estilo para o botão do WhatsApp */
+.btn-whatsapp {
+display: inline-flex;
+align-items: center;
+padding: 10px 20px;
+background-color: #25D366;
+color: white;
+border-radius: 5px;
+text-decoration: none;
+font-weight: bold;
+
+}
+
+.btn-whatsapp:hover {
+background-color: #20b358;
+text-decoration: none;
+color: rgb(243, 243, 243);
+}
+
+.btn-whatsapp i {
+margin-right: 10px;
+}

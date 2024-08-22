@@ -1,0 +1,33 @@
+<!-- adote/admin/templates/admin/base_site.html -->
+
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">A friend for life - Admin</a></h1>
+{% endblock %}
+
+{% block title %}
+    <title>
+        {% if title %}
+            {{ title }} | A friend for life - Admin
+        {% else %}
+            A friend for life - Admin
+        {% endif %}
+    </title>
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'admin/css/admin.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/css/mdq_admin.css' %}">
+{% endblock %}
+
+{% block nav-global %}
+    {% if user.is_active and user.is_staff %}
+        <a href="{% url 'home' %}">Voltar para o site</a>
+     
+    {% endif %}
+{% endblock %}
+

@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+<link href="{% static 'divulgar/novo_pet/css/novo_pet.css' %}" rel="stylesheet">
+<link href="{% static 'divulgar/novo_pet/css/novo_pet_mdq.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block title %}Novo Pet{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="box">
+        <div class="header-box">
+            Novo Pet
+        </div>
+        <hr>
+        <div class="body-box">
+            <form method="POST" enctype="multipart/form-data"> 
+                {% csrf_token %}
+                {% if errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for error in errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                
+                <div class="form-section">
+                    <label for="foto_principal" class="form-label">Foto Principal:</label>
+                    <input type="file" id="foto_principal" name="foto_principal" class="form-control" onchange="previewMainImage(event)">
+                    <small class="text-muted">*Obrigatório</small>
+                    <div id="mainImagePreview" class="image-preview"></div>
+                </div>
+                <hr>
+                <div class="form-section">
+                    <label for="fotos_secundarias" class="form-label">Fotos Secundárias:</label>
+                    <input type="file" id="fotos_secundarias" name="fotos_secundarias" class="form-control" multiple onchange="previewSecondaryImages(event)">
+                    <small class="text-muted">*Obrigatório</small>
+                    <div id="secondaryImagesPreview" class="image-preview"></div>
+                </div>
+                <hr>
+                <div class="form-section">
+                    <label for="especie">Espécie:</label>
+                    <select id="especie" name="especie" class="form-select" required>
+                        <option value="">Selecione</option>
+                        <option value="Cachorro">Cachorro</option>
+                        <option value="Gato">Gato</option>
+                    </select>
+                    <small class="text-muted">*Obrigatório</small>
+                </div>
+                <hr>
+                <div class="form-section">
+                    <label for="sexo">Sexo:</label>
+                    <select id="sexo" name="sexo" class="form-select" required>
+                        <option value="">Selecione</option>
+                        <option value="Macho">Macho</option>
+                        <option value="Fêmea">Fêmea</option>
+                    </select>
+                    <small class="text-muted">*Obrigatório</small>
+                </div>
+                <hr>
+                <div class="form-section">
+                    <label for="tamanho">Tamanho:</label>
+                    <select id="tamanho" name="tamanho" class="form-select" required>
+                        <option value="">Selecione</option>
+                        <option value="Grande">Grande</option>
+                        <option value="Médio">Médio</option>
+                        <option value="Pequeno">Pequeno</option>
+                    </select>
+                    <small class="text-muted">*Obrigatório</small>
+                </div>
+                <hr>
+                <div class="form-section">
+                    <label for="nome_pet">Nome:</label>
+                    <input type="text" id="nome_pet" name="nome_pet" class="form-control" value="{{ nome_pet }}" required maxlength="10">
+                    <small class="text-muted">*Obrigatório, no máximo 10 caracteres</small>
+                    
+                </div>
+                <hr>
+                <div class="form-section">
+                    <label for="historia_pet">Conte a historia do Seu Pet</label>
+                    <textarea id="historia_pet" name="historia_pet" class="form-control" rows="3" required>{{ historia_pet }}</textarea>
+                    <small class="text-muted">*Obrigatório</small>
+                </div>
+     
+                <hr>
+                <div class="form-section">
+                    <label for="cuidados">Cuidados Veterinários:</label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="cuidados1" name="cuidados" value="Castrado">
+                        <label class="form-check-label" for="cuidados1">Castrado</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="cuidados2" name="cuidados" value="Vacinado">
+                        <label class="form-check-label" for="cuidados2">Vacinado</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="cuidados3" name="cuidados" value="Vermifugado">
+                        <label class="form-check-label" for="cuidados3">Vermifugado</label>
+                    </div>
+                </div>
+                <small class="text-muted">*Marque pelo menos uma opçao</small>
+                <hr>
+                <div class="form-section">
+                    <label for="vive_bem_em">Vive Bem Em:</label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="vive_bem_em1" name="vive_bem_em" value="Apartamento">
+                        <label class="form-check-label" for="vive_bem_em1">Apartamento</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="vive_bem_em2" name="vive_bem_em" value="Casa">
+                        <label class="form-check-label" for="vive_bem_em2">Casa</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="vive_bem_em3" name="vive_bem_em" value="Chácara/Sítio">
+                        <label class="form-check-label" for="vive_bem_em3">Chácara/Sítio</label>
+                    </div>
+                </div>
+                <small class="text-muted">*Marque pelo menos uma opçao</small>
+                <hr>
+                <div class="form-section">
+                    <label for="temperamento">Temperamento:</label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="temperamento1" name="temperamento" value="Brincalhão">
+                        <label class="form-check-label" for="temperamento1">Brincalhão</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="temperamento2" name="temperamento" value="Calmo">
+                        <label class="form-check-label" for="temperamento2">Calmo</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="temperamento3" name="temperamento" value="Arisco">
+                        <label class="form-check-label" for="temperamento3">Arisco</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="temperamento4" name="temperamento" value="Dócil">
+                        <label class="form-check-label" for="temperamento4">Dócil</label>
+                    </div>
+                </div>
+                <small class="text-muted">*Marque pelo menos uma opçao</small>
+                <hr>
+                <div class="form-section">
+                    <label for="sociavel_com">Sociável Com:</label>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="sociavel_com1" name="sociavel_com" value="Cães">
+                        <label class="form-check-label" for="sociavel_com1">Cães</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="sociavel_com2" name="sociavel_com" value="Gatos">
+                        <label class="form-check-label" for="sociavel_com2">Gatos</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="sociavel_com3" name="sociavel_com" value="Crianças">
+                        <label class="form-check-label" for="sociavel_com3">Crianças</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="sociavel_com4" name="sociavel_com" value="Idosos">
+                        <label class="form-check-label" for="sociavel_com4">Idosos</label>
+                    </div>
+                </div>
+                <small class="text-muted">*Marque pelo menos uma opçao</small>
+                <hr>
+                <button type="submit" class="btn btn-custom-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function previewMainImage(event) {
+       const file = event.target.files[0];
+       const previewContainer = document.getElementById('mainImagePreview');
+       
+       // Limpa a imagem principal existente na pré-visualização
+       previewContainer.innerHTML = '';
+   
+       const img = document.createElement('img');
+       img.src = URL.createObjectURL(file);
+       img.onload = function() {
+           URL.revokeObjectURL(this.src);
+       };
+   
+       const imageBox = document.createElement('div');
+       imageBox.classList.add('image-box');
+   
+       // Botão de remoção da imagem principal
+       const removeBtn = document.createElement('button');
+       removeBtn.innerHTML = '×';
+       removeBtn.classList.add('remove-image');
+       removeBtn.onclick = function() {
+           // Limpa a imagem principal e reseta o input file
+           previewContainer.innerHTML = '';
+           document.getElementById('foto_principal').value = '';
+       };
+   
+       // Marca esta imagem como principal ao clicar nela
+       imageBox.onclick = function() {
+           img.classList.toggle('main-image');
+       };
+   
+       imageBox.appendChild(img);
+       imageBox.appendChild(removeBtn);
+       previewContainer.appendChild(imageBox);
+   }
+   
+   function previewSecondaryImages(event) {
+       const files = event.target.files;
+       const previewContainer = document.getElementById('secondaryImagesPreview');
+       var maxImages = 5; // Limite máximo de imagens secundárias
+
+    if (files.length > maxImages) {
+        alert('Você só pode selecionar no máximo 5 imagens secundárias.');
+        // Limpa o campo de seleção de arquivo para evitar envio excessivo
+        document.getElementById('fotos_secundarias').value = '';
+        return;
+    }
+       // Limpa as imagens secundárias existentes na pré-visualização
+       previewContainer.innerHTML = '';
+   
+       // Converte FileList em Array para manipulação mais fácil
+       const fileArray = Array.from(files);
+   
+       fileArray.forEach((file, index) => {
+           const img = document.createElement('img');
+           img.src = URL.createObjectURL(file);
+           img.onload = function() {
+               URL.revokeObjectURL(this.src);
+           };
+   
+           const imageBox = document.createElement('div');
+           imageBox.classList.add('image-box');
+   
+           // Botão de remoção da imagem secundária
+           const removeBtn = document.createElement('button');
+           removeBtn.innerHTML = '×';
+           removeBtn.classList.add('remove-image');
+           removeBtn.onclick = function() {
+               // Remove a imagem do array
+               fileArray.splice(index, 1);
+   
+               // Atualiza o campo de input com os novos arquivos
+               const dt = new DataTransfer();
+               fileArray.forEach(file => dt.items.add(file));
+               document.getElementById('fotos_secundarias').files = dt.files;
+   
+               // Remove a imagem do container
+               imageBox.remove();
+           };
+   
+           imageBox.appendChild(img);
+           imageBox.appendChild(removeBtn);
+           previewContainer.appendChild(imageBox);
+       });
+   }
+   
+   </script>
+{% endblock %}

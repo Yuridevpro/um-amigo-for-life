@@ -1,0 +1,48 @@
+   /* Responsividade para Mobile */
+   @media (max-width: 768px) {
+    .header-box {
+        width: 85%;
+        font-size: 35px;
+    }
+
+    .card {
+        flex-direction: column; /* Empilha as imagens e informações */
+        align-items: flex-start; /* Alinhamento do topo */
+    }
+
+    .imagens_pet {
+        max-width: 100%;
+      
+    }
+
+    .informacoes {
+        width: 100%; /* Ajuste para ocupar 100% da largura */
+    }
+
+    .outras-informacoes {
+        width: 100%; /* Ajuste para ocupar 100% da largura */
+    }
+
+    .info-columns {
+        flex-direction: column; /* Empilha as colunas */
+    }
+
+    .info-column {
+        width: 100%; /* Cada coluna ocupa 100% da largura */
+    }
+
+    .pet-content {
+        flex-direction: column; /* Empilha os detalhes */
+    }
+    .box{
+        width: 100vw;
+    }
+    .pet-story{
+        width: 100%;
+    }
+    .pet-story-container{
+        max-width: 100%;
+        
+    }
+}
+

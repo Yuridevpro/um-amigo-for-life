@@ -1,0 +1,80 @@
+.header-box{
+    margin-bottom: 50px;
+}
+form {
+    font-weight: bold;
+}
+.profile-container {
+    width: 70%;
+    padding: 20px;
+    background-color: none;
+    
+    margin: auto;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-side {
+    width: 100%;
+}
+
+/* Estilos para a pré-visualização de imagens */
+.image-preview {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.image-preview .image-box {
+    position: relative;
+    width: 100px; /* Largura padrão para as miniaturas */
+    height: 100px; /* Altura padrão para as miniaturas */
+    overflow: hidden;
+}
+
+.image-preview img {
+    width: 100%; /* Cobrir todo o espaço disponível */
+    height: 100%; /* Cobrir todo o espaço disponível */
+    object-fit: cover; /* Garantir que a imagem cubra todo o espaço do box */
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+.btn-custom-primary {
+    background-color: #AA2293;
+    border: none;
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease-in-out;
+    display: block;
+    margin: auto;
+  }
+  
+  .btn-custom-primary:hover {
+    color: white;
+    background-color: #7B50A6;
+  }
+  

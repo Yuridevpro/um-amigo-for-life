@@ -1,0 +1,141 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}ADO.TE{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'base/css/base.css' %}" rel="stylesheet">
+    <link href="{% static 'base/css/mdq_base.css' %}" rel="stylesheet">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img class="logo" src="/static/base/img/logo.png" alt="">
+            </a>
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'quem_somos' %}">Quem somos</a>
+                    </li>
+
+                    {% if not request.user.is_authenticated %} 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cadastro' %}">Cadastre-se</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'listar_pets' %}">Adotar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'novo_pet' %}">Novo Pet</a>
+                    </li>
+                   
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'depoimento' %}">Depoimentos</a>
+                    </li>
+
+                    
+                    {% if request.user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/">Admin</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="dropdown navbar-profile">
+            <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="navbar-profile-picture" 
+                    style="width: 65px;
+                    height: 65px;
+                    border-radius: 50%;
+                    background-color: #000000; 
+                    overflow: hidden;">
+                    {% if request.user.userprofile.foto_perfil %}
+                    <img src="{{ request.user.userprofile.foto_perfil.url }}" alt="Foto de perfil" style="width: 100%; height: auto;">
+                    {% else %}
+                    <img src="{% static 'perfil/meu_perfil/img/default_profile_picture.png' %}" alt="Foto de perfil" style="width: 100%; height: auto;">
+                    {% endif %}
+                </div>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="{% url 'meu_perfil' %}">Meu perfil</a></li>
+                <li><a class="dropdown-item" href="{% url 'editar_perfil' %}">Editar perfil</a></li>
+                <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar senha</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'sair' %}">Sair</a></li>
+            </ul>
+        </div>
+        {% endif %}
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer class="footer mt-auto py-3" style="margin-bottom: 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>Objetivo</h5>
+                    <p>Somos uma plataforma dedicada a conectar animais de estimação a lares amorosos. Nossa missão é salvar vidas e proporcionar alegria para famílias.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Links Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'quem_somos' %}">Quem somos</a></li>
+                        <li><a href="{% url 'listar_pets' %}">Adotar</a></li>
+                        <li><a href="{% url 'novo_pet' %}">Novo Pet</a></li>
+                        <li><a href="{% url 'depoimento' %}">Depoimentos</a></li>
+                </div>
+                <div class="col-md-3">
+                    <h5>Sobre Nós</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'quem_somos' %}">Quem somos</a></li>
+                        <li><a href="{% url 'termos_servico' %}">Termos de serviço</a></li>
+                        <li><a href="{% url 'politica_privacidade' %}">Politica de privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contate-nos</h5>
+                    <p>Email: afriendforalife@gmail.com<br>Telefone: (11) 1234-5678</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-link me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+
+                 <a class="navbar-brand" href="{% url 'home' %}"><img class="footer-logo" src="/static/base/img/logo.png" alt="Logo" style="max-width: 100px;
+                margin-bottom: 10px;"></a>
+                <p>Todos os direitos reservados &reg;</p>
+
+            </div>
+        </div>
+    </footer>
+
+    <footer class="text-center" style="background-color: #D0B5D9; padding: 10px 0; bottom: 0; width: 100%;">
+        <p style="margin: 0;">Desenvolvido por Yuri</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+    
+</body>
+</html>

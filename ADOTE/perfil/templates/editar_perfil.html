@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+<link href="{% static 'perfil/editar_perfil/css/editar_perfil.css' %}" rel="stylesheet">
+<link href="{% static 'perfil/editar_perfil/css/editar_perfil_mdq.css' %}" rel="stylesheet">
+<style>
+</style>
+{% endblock %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    <div class="box">
+        <div class="header-box">
+            Editar Perfil
+        </div>
+        <div class="profile-container">
+            <div class="row">
+                <div class="col-md-8 col-12 bg-side">
+                    <div class="body-form">
+                        {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                        <hr>
+                        <form action="{% url 'editar_perfil' %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome:</label>
+                                <input type="text" class="form-control" id="nome" placeholder="Digite seu nome..." name="nome" value="{{ user_profile.nome }}" required>
+                                <small class="text-muted">*Obrigatório</small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sobrenome" class="form-label">Sobrenome:</label>
+                                <input type="text" class="form-control" id="sobrenome" placeholder="Digite seu sobrenome..." name="sobrenome" value="{{ user_profile.sobrenome }}">
+                                <small class="text-muted">*Obrigatório</small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-mail:</label>
+                                <input type="email" class="form-control" id="email" placeholder="Digite seu email..." name="email" value="{{ user_profile.email }}" required>
+                                <small class="text-muted">*Obrigatório</small>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefone" class="form-label">Telefone:</label>
+                                <input type="tel" class="form-control" id="telefone" placeholder="Digite seu telefone..." name="telefone" value="{{ user_profile.telefone }}" required>
+                                <small class="text-muted">*Obrigatório</small>
+                            </div>
+
+                            <div class="form-section">
+                                <label for="foto_perfil" class="form-label">Foto de Perfil:</label>
+                                <input type="file" id="foto_perfil" name="foto_perfil" class="form-control" onchange="previewImage(event)">
+
+                                {% if user_profile.foto_perfil %}
+                                    <div id="imagePreview" class="image-preview">
+                                        <div class="image-box">
+                                            <img src="{{ user_profile.foto_perfil.url }}" alt="Foto de perfil">
+                                            <button class="remove-image" onclick="removeImage()">×</button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3" style="margin-top: 20px;">
+                                <label for="estado" class="form-label">Estado:</label>
+                                <select class="form-select" id="estado" name="estado" required>
+                                    <option value="">Selecione o estado...</option>
+                                    <option value="{{ user_profile.estado_id }}" selected>{{ user_profile.estado_nome }}</option>
+                                </select>
+                                <input type="hidden" id="estado_nome" name="estado_nome" value="{{ user_profile.estado_nome }}">
+                                <small class="text-muted">*Obrigatório</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="cidade" class="form-label">Cidade:</label>
+                                <select class="form-select" id="cidade" name="cidade" required>
+                                    <option value="">Selecione a cidade...</option>
+                                    <option value="{{ user_profile.cidade_nome }}" selected>{{ user_profile.cidade_nome }}</option>
+                                </select>
+                            </div>
+
+                            <!-- Adicione o campo oculto aqui -->
+                            <input type="hidden" name="remove_foto_perfil" id="remove_foto_perfil" value="false"> 
+                            <small class="text-muted">*Obrigatório</small>
+
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-custom-primary">SALVAR</button>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; justify-content: right; margin-top: 30px;" >
+                                <!-- Botão para abrir o modal de confirmação -->
+                                <a class="link-float" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">remover conta</a>
+                            </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmação -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Deleção</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja remover sua conta? Essa ação é irreversível. Você perderá todos os seus dados, incluindo seus pets cadastrados.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form method="POST" action="{% url 'remover_conta' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Confirmar Deleção</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+            method: 'GET',
+            success: function(data) {
+                data.sort(function(a, b) {
+                    return a.nome.localeCompare(b.nome);
+                });
+                $.each(data, function(key, estado) {
+                    // Obter o ID do estado do usuário
+                    var estadoId = "{{ user_profile.estado_id }}";
+
+                    // Comparar o ID do estado com o ID do estado atual
+                    if (estado.id === parseInt(estadoId)) {
+                        $('#estado').append($('<option>', {
+                            value: estado.id, // Corrigido: Use o ID do estado como valor
+                            text: estado.nome,
+                            selected: true // Setar o estado como selecionado
+                        }));
+                    } else {
+                        $('#estado').append($('<option>', {
+                            value: estado.id, // Corrigido: Use o ID do estado como valor
+                            text: estado.nome
+                        }));
+                    }
+                });
+            }
+        });
+
+        $('#estado').change(function() {
+            var estadoId = $(this).val();
+            var estadoNome = $(this).find(':selected').text(); 
+
+            if (estadoId) {
+                $.ajax({
+                    url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados/' + estadoId + '/municipios',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#cidade').empty().append($('<option>', {
+                            value: '',
+                            text: 'Selecione a cidade...'
+                        }));
+                        data.sort(function(a, b) {
+                            return a.nome.localeCompare(b.nome);
+                        });
+                        $.each(data, function(key, cidade) {
+                            $('#cidade').append($('<option>', { 
+                                value: cidade.nome,
+                                text: cidade.nome,
+                                selected: cidade.nome === "{{ user_profile.cidade_nome }}"
+                            }));
+                        });
+                    }
+                });
+            } else {
+                $('#cidade').empty().append($('<option>', {
+                    value: '',
+                    text: 'Selecione a cidade...'
+                }));
+            }
+            // Corrigido: Pegue o valor do atributo 'value' do option selecionado
+            $('#estado_nome').val(estadoNome); 
+        });
+    });
+
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const previewContainer = document.getElementById('imagePreview');
+
+        // Limpa a imagem existente na pré-visualização
+        previewContainer.innerHTML = '';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.onload = function() {
+            URL.revokeObjectURL(this.src);
+        };
+
+        const imageBox = document.createElement('div');
+        imageBox.classList.add('image-box');
+
+        // Botão de remoção da imagem
+        const removeBtn = document.createElement('button');
+        removeBtn.innerHTML = '×';
+        removeBtn.classList.add('remove-image');
+        removeBtn.onclick = function() {
+            removeImage();
+        };
+
+        imageBox.appendChild(img);
+        imageBox.appendChild(removeBtn);
+        previewContainer.appendChild(imageBox);
+    }
+
+    function removeImage() {
+        const previewContainer = document.getElementById('imagePreview');
+        previewContainer.innerHTML = ''; // Limpa a pré-visualização
+
+        const inputFile = document.getElementById('foto_perfil');
+        inputFile.value = ''; // Limpa o valor do campo de arquivo
+
+        document.getElementById('remove_foto_perfil').value = 'true'; // Marca a remoção da foto de perfil
+    }
+</script>
+
+{% endblock %}

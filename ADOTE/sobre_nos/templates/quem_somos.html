@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<style>
+    /* Para telas móveis de todos os tipos */
+    @media only screen and (max-width: 768px) {
+        .header-box {
+            font-size: 35px;
+            width: 65vw;
+        }
+        .box {
+            width: 100vw;
+        }
+    }
+    .about-section {
+        background-color: none;
+        padding: 20px;
+        margin-top: 20px;
+        max-width: 800px;
+        margin: auto;
+    }
+    .about-section p {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #3b1068; /* Cor do texto */
+        margin-bottom: 15px;
+    }
+    .about-section p strong {
+        color: #3b1068; /* Cor do texto */
+    }
+    .about-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #3b1068; /* Cor do título */
+    }
+    .social-icons a {
+        color: #3b1068; /* Cor dos ícones */
+        font-size: 1.5rem;
+        margin-right: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block title %}Sobre Nós{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="box">
+        {% if messages %}
+            <br>
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="header-box">
+           Quem somos
+        </div>
+        <hr>
+
+        <!-- Seção Sobre Nós -->
+        <div class="about-section">
+            <h2>Sobre A FRIEND FOR LIFE</h2>
+            <p>O A FRIEND FOR LIFE é uma plataforma online de adoção de animais. Acreditamos que todo animal de rua merece um lar. Nosso trabalho é conectar animais que estão em abrigos com pessoas que estão procurando por um novo amigo para chamar de seu.</p>
+            
+            <h2>Como funciona</h2>
+            <p>Nós não temos abrigos e nem fazemos resgates de animais! Nosso trabalho é 100% online, oferecendo visibilidade aos animaizinhos que precisam de um lar. Funciona assim:</p>
+            <p>1. Pessoas que estão interessadas em ter um novo bichinho vão entrar no site e procurar um que tenha a ver com o perfil deles;</p>
+            <p>2. Quando acharem aquele especial, elas clicam em “adotar”, e logo após irá aparecer um card informativo sobre as informações de contato do protetor. Agora é só entrar em contato com o protetor e informar que você está interessado no pet.</p>
+            
+            <h2>Quer divulgar um cão ou gato para adoção?</h2>
+            <p>Se você está dando lar temporário ou quer divulgar um animal para adoção, faça seu cadastro no site e, em seguida, publique o bichinho. Coloque o máximo de características e fotos sobre ele: assim você aumenta as chances de encontrar alguém que realmente combine com seu perfil, ajudando a evitar decepção e futuros abandonos. Pelo mesmo motivo, seja sincero quanto ao estado de saúde e características do animal.</p>
+            <p>Importante: este é um site de adoção e a venda de animais é proibida, ok? Usuários que tentarem vender animais serão banidos do site.</p>
+            
+            <h2>E que tal adotar um amigo?</h2>
+            <p><a href="{% url 'listar_pets' %}">Clique aqui</a> para conhecer os cães e gatos que estão esperando um lar.</p>
+
+            <h2>Nossa Missão</h2>
+            <p>Nosso objetivo é reduzir o número de animais abandonados, oferecendo um espaço onde protetores e futuros adotantes possam se encontrar. Queremos garantir que cada animal tenha a chance de encontrar um lar amoroso e permanente.</p>
+
+            <h2>Visão</h2>
+            <p>Sonhamos com um mundo onde nenhum animal sofre nas ruas e todos têm um lar seguro e amoroso. Trabalhamos incansavelmente para que cada adoção seja bem-sucedida, promovendo a posse responsável e consciente.</p>
+            
+            <h2>Siga o A FRIEND FOR LIFE nas redes:</h2>
+            <div class="social-icons">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

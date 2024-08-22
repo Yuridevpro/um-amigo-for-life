@@ -1,0 +1,19 @@
+
+.fundo {
+    display: inline-block ;
+    width: 100%; /* largura da div */
+    height: 390px; /* altura da div */
+    background-image: url('img/fundo.png'); /* caminho da imagem de fundo */
+    background-size: cover; /* ajusta o tamanho da imagem para cobrir toda a área */
+    background-position: center 65%; /* posiciona a imagem no centro */
+    background-repeat: no-repeat; /* evita que a imagem seja repetida */
+
+
+}
+#porqueadotar {
+    background-color: #f2d7d5;
+}
+
+#apresentacao {
+    background-color: #add8e6;
+}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+<link href="{% static 'perfil/alterar_senha/css/alterar.css' %}" rel="stylesheet">
+<link href="{% static 'perfil/alterar_senha/css/alterar_senha_mdq.css' %}" rel="stylesheet">
+<style>
+   
+   @media only screen and (max-width: 768px) {
+        .header-box {
+            font-size: 35px;
+            width: 65vw;
+        }
+        .box {
+            width: 100vw;
+        }
+
+        .profile-info {
+            flex-direction: column; /* Alinha os elementos verticalmente em telas menores */
+        }
+    }
+
+    .mt-5{
+        max-width: 500px;
+
+    }
+
+    .form-group{
+        margin-bottom: 10px;
+    }
+    
+    .btn-primary{
+        display: block;
+        margin: auto;
+        margin-top: 25px;
+    }
+   
+</style>
+{% endblock %}
+
+{% block title %}Perfil{% endblock %}
+
+
+{% block content %}
+<div class="wrapper">
+    <div class="box">
+        <div class="header-box">
+            Alterar senha
+        </div>
+        <hr>
+      <div class="container mt-5">
+    
+    <!-- Exibir mensagens -->
+    {% if messages %}
+                        <br>
+                        {% for message in messages %}
+                            <div class="alert {{message.tags}}">
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="senha_atual">Senha Atual</label>
+            <input type="password" class="form-control" id="senha_atual" name="senha_atual" required>
+        </div>
+        <div class="form-group">
+            <label for="senha_nova">Nova Senha</label>
+            <input type="password" class="form-control" id="senha_nova" name="senha_nova" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmar_senha">Confirmar Nova Senha</label>
+            <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Alterar Senha</button>
+    </form>
+</div>
+</div>
+</div>
+{% endblock %}
+

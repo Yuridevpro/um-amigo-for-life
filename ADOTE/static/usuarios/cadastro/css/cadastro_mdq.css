@@ -1,0 +1,8 @@
+@media only screen and (max-width: 768px) {
+    .fundo {
+        display: none;
+    }
+    .side-logo{
+        display: none;
+    }
+}

@@ -1,0 +1,19 @@
+
+@media only screen and (max-width: 768px) {
+    /* Define a direção dos elementos dentro de .form-section como coluna em telas menores */
+    .form-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Adiciona margem entre os atributos na vertical */
+    .form-section .form-check-inline {
+        margin-bottom: 10px;
+    }
+
+    /* Reduz a largura do header e box */
+    .header-box {
+        font-size: 35px;
+        width: 65vw;
+    }
+}

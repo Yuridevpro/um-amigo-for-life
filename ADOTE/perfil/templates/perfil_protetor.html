@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link href="{% static 'perfil/meu_perfil/css/meu_perfil.css' %}" rel="stylesheet">
+<link href="{% static 'perfil/meu_perfil/css/meu_perfil_mdq.css' %}" rel="stylesheet">
+<link href="{% static 'adotar/css/listar_pets.css' %}" rel="stylesheet">
+<link href="{% static 'adotar/css/listar_pets_mdq.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+{% endblock %}
+
+{% block title %}Perfil do Protetor{% endblock %}
+{% block content %}
+<div class="wrapper">
+    <div class="box">
+        {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+        <div class="header-box">
+            Perfil
+        </div>
+        <hr>
+        <div class="profile-info">
+            <div class="profile-picture">
+                {% if user_profile.foto_perfil %}
+                    <img src="{{ user_profile.foto_perfil.url }}" alt="Foto de perfil">
+                {% else %}
+                    <!-- Adicione uma imagem padrão se não houver foto -->
+                    <img src="{% static 'perfil/meu_perfil/img/default_profile_picture.png' %}" alt="Foto de perfil">
+                {% endif %}
+            </div>
+            
+        <div class="content">
+           
+                    <h1 style="text-transform: uppercase;">{{ user.userprofile.nome }} {{ user.userprofile.sobrenome }}</h1>
+                    
+                    <p>
+                        {{ user_profile.estado_nome }} / {{ user_profile.cidade_nome }}
+                    </p>
+                    
+                    <div class="buttons">
+                        
+                        <button class="contact-button" data-bs-toggle="modal" data-bs-target="#contactModal">
+                            <span class="contact-icon">✉</span> Ver contatos
+                        </button>
+                    </div>
+
+
+                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="contactModalLabel">Contatos do Usuário</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Email: {{ user.email }}</p>
+                                    <p>Telefone: {{ user.userprofile.telefone }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                 
+                
+                    <div class="counters">
+                        <div class="counter">
+                            <span class="number">{{ pets_divulgados }}</span>  <!-- Usando a contagem total -->
+                            <p>Animais divulgados</p>
+                        </div>
+                        <div class="counter">
+                            <span class="number">{{ pets_adotados }}</span>
+                            <p>Animais divulgado adotados</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+      
+
+            {% if is_owner %}
+            <div class="header-box">
+                Meus Pets
+            </div>
+        {% else %}
+            <div class="header-box">
+                Pets divulgados por {{ user.userprofile.nome }} {{ user.userprofile.sobrenome }}
+            </div> 
+            {% endif %}
+            
+        <hr style="color: gray;">
+
+        <div class="pet-list d-flex flex-wrap">
+            {% if pets %}
+                {% for pet in pets %}
+                    <div class="pet-item col-6">
+                        <div class="card">
+                            <a href="{% url 'ver_pet' pet.id %}">
+                                {% if pet.foto_principal %}
+                                    <img src="{{ pet.foto_principal.url }}" alt="Imagem do Pet">
+                                {% else %}
+                                    <p>Imagem principal não disponível.</p>
+                                {% endif %}
+                            </a>
+                            <div class="card-body">
+                                <span class="icone-pets">
+                                    {% if pet.especie == 'Cachorro' %}
+                                        {% if pet.sexo == 'Macho' %}
+                                            <i class="fas fa-dog male icon"></i>
+                                        {% else %}
+                                            <i class="fas fa-dog female icon"></i>
+                                        {% endif %}
+                                    {% elif pet.especie == 'Gato' %}
+                                        {% if pet.sexo == 'Macho' %}
+                                            <i class="fas fa-cat male icon"></i>
+                                        {% else %}
+                                            <i class="fas fa-cat female icon"></i>
+                                        {% endif %}
+                                    {% endif %}
+                                </span>
+                                <div class="informacoes-pet">
+                                    <h3 class="card-title {% if pet.sexo == 'Macho' %}macho{% elif pet.sexo == 'Fêmea' %}femea{% endif %}">{{ pet.nome_pet }}</h3>
+                                    <h6 class="card-text">
+                                        {{ user_profile.estado_nome }} / {{ user_profile.cidade_nome }}
+                                    </h6>
+                                </div>
+                                <div class="temperamento">
+                                    {% for temperamento in pet.temperamento %}
+                                        <span>
+                                            {% if temperamento == 'Agressivo' %}
+                                                <i class="fas fa-angry"></i>
+                                            {% elif temperamento == 'Arisco' %}
+                                                <i class="fas fa-exclamation-circle"></i>
+                                            {% elif temperamento == 'Brincalhão' %}
+                                                <i class="fas fa-smile"></i>
+                                            {% elif temperamento == 'Calmo' %}
+                                                <i class="fas fa-laugh-beam"></i>
+                                            {% elif temperamento == 'Carente' %}
+                                                <i class="fas fa-heart-broken"></i>
+                                            {% elif temperamento == 'Docil' %}
+                                                <i class="fas fa-heartbeat"></i>
+                                            {% endif %}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                                <div class="descricao">
+                                    <span class="short-description">{{ pet.historia_pet|truncatechars_html:90 }}</span>
+                                </div>
+                                <div class="paws">
+                                    <div class="pata grande {% if pet.tamanho == 'Grande' %}animated{% endif %}">
+                                        <i class="fas fa-paw" style="color: #000000; font-size: 18px;"></i>
+                                    </div>
+                                    <div class="pata medio {% if pet.tamanho == 'Médio' %}animated{% endif %}">
+                                        <i class="fas fa-paw" style="color: #000000; font-size: 16px;"></i>
+                                    </div>
+                                    <div class="pata pequeno {% if pet.tamanho == 'Pequeno' %}animated{% endif %}">
+                                        <i class="fas fa-paw" style="color: #000000; font-size: 12px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tag">
+                                {% if pet.status == "P" %}
+                                    <span class="badge text-bg-primary">Para adoção</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if user != is_owner %}
+                        <div class="d-flex justify-content-center btnadotar">
+                            <a href="{% url 'ver_pet' pet.id %}">Adotar</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Este usuário ainda não cadastrou nenhum pet.</p>
+            {% endif %}
+        </div>
+
+        <nav aria-label="Page navigation example" style="display: flex; justify-content: center; margin-top: 20px;" class="nav-pagination">
+            <ul class="pagination">
+                <li class="page-item {% if pets.has_previous %} "{% else %}disabled{% endif %}">
+                    <a class="page-link" href="{% if pets.has_previous %}?page={{ pets.previous_page_number }}{% else %}#{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                {% for num in page_numbers %}
+                    {% if num == "..." %}
+                        <li class="page-item disabled"><span class="page-link">…</span></li>
+                    {% else %}
+                        <li class="page-item {% if pets.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                <li class="page-item {% if pets.has_next %} "{% else %}disabled{% endif %}">
+                    <a class="page-link" href="{% if pets.has_next %}?page={{ pets.next_page_number }}{% else %}#{% endif %}" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,113 @@
+.box{
+    margin-top: 110px !important;
+}
+    .profile-info {
+        width: 60%;
+      
+      background-color: none;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+        display: flex;
+        flex-direction: row; /* Alinha os elementos horizontalmente */
+        justify-content: space-between; /* Espaço entre os elementos */
+        align-items: center; /* Alinha verticalmente os elementos */
+    }
+
+    .profile-info h1 {
+        font-size: 35px;
+        letter-spacing: 2px;
+        font-family: var(--font-title);
+        margin-bottom: 10px;
+    }
+
+    .profile-info p {
+        margin: 5px 0;
+    }
+
+    .profile-picture {
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background-color: #ccc;
+        margin-right: 20px; /* Espaço entre a imagem do perfil e as informações */
+        overflow: hidden; /* Esconde o conteúdo que excede as dimensões da div */
+    }
+
+    .profile-picture img {
+        width: 100%; /* Faz a imagem ocupar a largura da div */
+        height: auto; /* Mantém a proporção da imagem */
+    }
+
+    .contact-button {
+        background-color: #FFC107;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .share-area {
+        background-color: #f2f2f2;
+        padding: 10px;
+        margin-top: 20px;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+  
+
+    .button {
+        background-color: #7748D7;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none; 
+    }
+
+    .counters {
+        margin-top: 20px;
+        display: flex;
+        gap: 30px;
+        width: 100%;
+    }
+
+    .counter {
+        text-align: center;
+    }
+
+    .counter .number {
+        font-size: 24px;
+        font-weight: bold;
+        color: #FFC107;
+    }
+
+    .share-icon {
+        font-size: 18px;
+        color: #7748D7;
+        margin-right: 5px;
+    }
+
+    .contact-icon {
+        font-size: 18px;
+        color: #fff;
+        margin-right: 5px;
+    }
+
+    .pet-list{
+        margin-top: 50px;
+    }
+    .header-box{
+        margin-top: 50px;
+    }
+    .card-footer{
+      
+        margin-top: 10px;
+        
+    }
+
+  

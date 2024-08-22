@@ -1,0 +1,242 @@
+
+body{
+    margin-top: 100px !important;
+}
+/* Estilos para o botão de filtrar */
+.btn-custom-primary {
+    background-color: #AA2293;
+    border: none;
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease-in-out;
+   
+  }
+  
+  .btn-custom-primary:hover {
+    background-color: #7B50A6;
+  }
+  
+
+.btn-custom-secondary:hover {
+    background-color: #02c4f0d5;
+}
+
+/* Estilos para a listagem dos pets */
+.pet-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: center;
+    
+    
+    
+}
+
+/* Estilos para os cards dos pets */
+.pet-item {
+    color: white;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    max-width: 300px;
+    max-height: 570px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+   border-bottom: 5px solid #3b1068;
+   border-top: 2px solid #51465d;
+
+}
+
+
+.card {
+    background: linear-gradient(135deg, #e6dbe4f1, #ecebf0f6, #fafafa); /* Gradiente de cores com transparência */
+    color: var(--color-text);; /* Cor do texto */
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.3), /* Sombra de texto suave */
+                 0 0 5px rgba(173, 184, 176, 0.4), /* Sombra de texto mais suave */
+                 0 0 2px rgba(255, 255, 255, 0.1); /* Sombra de texto muito suave */
+                 width: 300px;
+                 height: 550px;
+}
+.card-body {
+    flex-grow: 1; /* Faz com que o card body cresça para preencher o espaço disponível */
+
+}
+
+.informacoes-pet{
+    text-align: center;
+    margin-top: -50px;
+}
+
+
+.pet-item img {
+    border-radius: 10px;
+    width: 300px;
+    height: 320px;
+    object-fit: cover;
+    margin-top: -11px;
+ 
+}
+
+
+
+
+.filtro-box {
+    background-color: #d0b5d9; /* Cor que combina com o header */
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-align: center;
+    width: 600px; /* Largura um pouco menor */
+    margin: auto; /* Centraliza horizontalmente */
+    padding: 20px; /* Espaçamento interno */
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+ 
+}
+
+ /* Estilos para ícones de gênero */
+ .icon {
+    font-size: 30px; /* Tamanho do ícone */
+
+   
+}
+
+
+.female {
+    color: rgb(255, 141, 160); /* Cor do ícone feminino */
+   
+}
+
+.male {
+    color: #3B1068; /* Cor do ícone masculino */
+    
+}
+
+/* Estilos para o nome do pet */
+/* Macho */
+.macho {
+    color: #3B1068;
+    text-shadow: 1px 1px 2px #3B1068;
+}
+
+/* Fêmea */
+.femea {
+    color: rgb(255, 141, 160);
+    text-shadow: 1px 1px 2px rgb(255, 141, 160);
+}
+
+
+
+/* Estilos para as imagens de patas */
+.paws {
+    position: absolute;
+    top: 370px; /* Ajuste conforme necessário */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.pata {
+    margin-bottom: 5px; /* Espaçamento entre as imagens de patas */
+    border-radius: 50%; /* Bordas arredondadas */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Posição relativa para animação na borda */
+    overflow: hidden; /* Esconde o overflow para evitar que o brilho se espalhe */
+}
+
+.pata.animated {
+    animation: pulse 1.5s infinite; /* Animação de pulso */
+    background-color: #7B50A6; /* Fundo dourado */
+    border: 2px solid #7B50A6; /* Borda dourada */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 #7B50A6
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px 10px rgba(255, 215, 0, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+.pata.pequeno {
+    background-color: #f2d7d5; /* Cor de fundo para pets pequenos */
+    width: 23px; /* Tamanho aumentado */
+    height: 23px;
+    left: -6px;
+}
+
+.pata.medio {
+    background-color: #ffd966; /* Cor de fundo para pets médios */
+    width: 30px; /* Tamanho aumentado */
+    height: 30px;
+    left: -3px;
+}
+
+.pata.grande {
+    background-color: #add8e6; /* Cor de fundo para pets grandes */
+    width: 35px; /* Tamanho aumentado */
+    height: 35px;
+}
+
+.descricao{
+    max-width:  110px;
+    max-height: 10px;
+    text-align: content;
+    font-size: 10px ;
+    margin: auto;
+    margin-top: 5px;
+    
+}
+.tag {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+ 
+}
+
+.card-text{
+    width: 60%;
+    margin: auto;
+}
+
+
+.btnadotar {
+    background-color: #AA2293;
+    border: none;
+    box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    padding: 5px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    margin-top: 10px;
+    
+  }
+  .btnadotar a{
+      text-decoration: none;
+      color: white;
+  }
+  .btnadotar:hover {
+      color: #85709a;
+    background-color: #7B50A6;
+  }
+  

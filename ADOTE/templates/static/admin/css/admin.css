@@ -1,0 +1,121 @@
+/* Estilos personalizados para o Django Admin */
+
+
+body {
+    background-color: #dbdbe38f; /* Define a cor de fundo da página para um cinza claro translúcido */
+    font-family: Arial, sans-serif; /* Define a fonte padrão para Arial, com fallback para sans-serif */
+    color: #6a3f96; /* Define a cor do texto para um roxo escuro */
+}
+
+#site-name a {
+    color: white !important; /* Define a cor do texto do título do site para branco */
+    font-family: 'Patua One', serif; /* Define a fonte do título para 'Patua One' */
+    font-size: 2em; /* Aumenta o tamanho da fonte do título */
+    text-decoration: none; /* Remove o sublinhado padrão dos links */
+    /* Adiciona um efeito de sombra ao texto para um efeito brilhante */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.337),
+                0 0 20px rgba(255, 255, 255, 0.382),
+                0 0 30px rgba(255, 255, 255, 0.445);
+}
+
+#site-name a:hover {
+    /* Altera o efeito de sombra ao passar o mouse sobre o título */
+    text-shadow: 0 0 1px rgba(139, 92, 157, 0.2),
+                 0 0 1px rgba(149, 113, 183, 0.34),
+                 0 0 25px rgba(197, 197, 197, 0.6);
+}
+
+/* Estilos para as seções do Django Admin */
+.module h2 {
+    background-color: #7B50A6; /* Define a cor de fundo do cabeçalho das seções para roxo */
+    color: white; /* Define a cor do texto dos títulos das seções para branco */
+    padding: 10px; /* Adiciona espaçamento interno para o cabeçalho das seções */
+    border-radius: 5px; /* Adiciona bordas arredondadas ao cabeçalho das seções */
+    font-family: 'Patua One', serif; /* Define a fonte dos títulos para 'Patua One' */
+    /* Adiciona sombras ao texto dos títulos das seções para um efeito brilhante */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.337),
+                0 0 20px rgba(255, 255, 255, 0.382),
+                0 0 30px rgba(255, 255, 255, 0.445);
+}
+
+.module h2 a {
+    color: white; /* Define a cor dos links dos títulos das seções para branco */
+    text-decoration: none; /* Remove o sublinhado dos links dos títulos */
+}
+
+.module h2 a:hover {
+    text-decoration: underline; /* Adiciona sublinhado ao passar o mouse sobre os links dos títulos */
+}
+
+/* Estilos para o menu global */
+.nav-global ul {
+    list-style: none; /* Remove as marcas de lista padrão */
+    padding: 0; /* Remove o espaçamento interno padrão */
+    margin: 0; /* Remove o espaçamento externo padrão */
+}
+
+.nav-global li {
+    display: inline-block; /* Exibe os itens do menu global na mesma linha */
+    margin-right: 20px; /* Adiciona espaço à direita de cada item do menu */
+}
+
+.nav-global a {
+    color: white; /* Define a cor dos links do menu global para branco */
+    text-decoration: none; /* Remove o sublinhado dos links */
+    font-weight: bold; /* Define o texto dos links como negrito */
+    font-size: 16px; /* Define o tamanho da fonte dos links */
+}
+
+#header .navbar a {
+    color: white; /* Define a cor dos links da barra de navegação para branco */
+    text-decoration: none; /* Remove o sublinhado dos links da barra de navegação */
+}
+
+/* Estilos para a barra lateral */
+#sidebar ul {
+    list-style: none; /* Remove as marcas de lista padrão */
+    padding: 0; /* Remove o espaçamento interno padrão */
+    margin: 0; /* Remove o espaçamento externo padrão */
+}
+
+#sidebar a {
+    color: white; /* Define a cor dos links da barra lateral para branco */
+    text-decoration: none; /* Remove o sublinhado dos links da barra lateral */
+    font-size: 16px; /* Define o tamanho da fonte dos links da barra lateral */
+}
+
+#sidebar a:hover {
+    text-decoration: underline; /* Adiciona sublinhado ao passar o mouse sobre os links da barra lateral */
+}
+
+/* Estilos para as tabelas */
+table {
+    font-size: 14px; /* Define o tamanho da fonte para o conteúdo das tabelas */
+    width: 100%; /* Faz com que a tabela ocupe 100% da largura do contêiner */
+    border-collapse: collapse; /* Remove os espaços entre as bordas das células */
+    display: block; /* Faz com que a tabela seja exibida como bloco para responsividade */
+ 
+    white-space: nowrap; /* Impede a quebra de texto em múltiplas linhas nas células */
+    margin-left: 1px;
+}
+
+table th, table td {
+    border: 1px solid #ddd; /* Define a borda das células da tabela com uma linha cinza clara */
+    padding: 8px; /* Adiciona espaçamento interno às células da tabela */
+    text-align: left; /* Alinha o conteúdo das células à esquerda */
+    white-space: nowrap; /* Garante que o conteúdo não quebre em múltiplas linhas */
+}
+
+th, td {
+    padding: 4px; /* Diminui o espaçamento interno entre as colunas da tabela */
+}
+
+#changelist{
+ 
+    padding: 20px;
+}
+
+.module.aligned {
+ 
+    padding: 20px;
+}

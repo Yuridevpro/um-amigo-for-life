@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link href="{% static 'divulgar/ver_pet/css/ver_pet.css' %}" rel="stylesheet">
+<link href="{% static 'divulgar/ver_pet/css/ver_pet_mdq.css' %}" rel="stylesheet">
+
+<style>
+    
+
+    .imagens_pet .imagem_principal img,
+    .imagens_pet .imagem_secundaria img {
+        border: 10px solid transparent; /* Ajuste conforme necessário */
+        border-image: url("{% static 'divulgar/ver_pet/css/img/image_border.png' %}") 30 round; /* Ajuste conforme necessário */
+        /* Border image width should match the original image border size */
+    }
+
+
+
+ 
+</style>
+{% endblock %}
+
+{% block title %}Ver Pet{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="box">
+        {% if messages %}
+        <br>
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+        <div class="header-box">Informações do Pet</div>
+        <hr>
+        
+        <div class="card">
+            <div class="imagens_pet">
+                <div class="imagem_principal">
+                    {% if pet.foto_principal %}
+                        <img src="{{ pet.foto_principal.url }}" alt="Imagem do Pet" class="img-fluid" onclick="trocarImagemPrincipal(this.src)">
+                    {% else %}
+                        <p>Imagem principal não disponível.</p>
+                    {% endif %}
+                </div>
+                
+                <div class="imagem_secundaria">
+                    {% if pet.fotos_secundarias.exists %} 
+                        {% for foto_secundaria in pet.fotos_secundarias.all %}
+                            <img src="{{ foto_secundaria.image.url }}" alt="Imagem do Pet" onclick="trocarImagemPrincipal(this.src)">
+                        {% endfor %}
+                    {% else %}
+                        <p style="text-align: center; margin-top: 31%; color: rgb(0, 0, 0);">Imagens secundárias não disponíveis.</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="informacoes">
+                <h4>Informações Relevantes</h4>
+                <div class="info-block">
+                    <h5>Informacoes do Pet</h5>
+                    <div class="info-item">
+                        <p>Espécie: <span>{{ pet.especie }}</span></p>
+                        <p>Sexo: <span>{{ pet.sexo }}</span></p>
+                        <p>Tamanho: <span>{{ pet.tamanho }}</span></p>
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <h5>Contatos do Protetor</h5>
+                    <div class="info-item">
+                        <p>Nome: <span>{{ user.userprofile.nome }} {{ user.userprofile.sobrenome }}</span></p>
+                        <p>Email: <span>{{ pet.usuario.email }}</span></p>
+                        <p>Telefone: <span>{{ pet.usuario.userprofile.telefone }}</span></p>
+                        <p>Perfil: <a href="{% url 'perfil_protetor' pet.usuario.id %}">Ver perfil do Protetor</a></p>
+
+                        {% if userprofile.user.id %}
+                            <a href="{% url 'ver_perfil' userprofile.user.id %}" class="btn btn-link">Ver Perfil do Protetor</a>
+                        {% endif %}
+
+                        <p>
+                            <a href="https://api.whatsapp.com/send?phone=55{{ pet.usuario.userprofile.telefone | default:'' }}" target="_blank" class="btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                Contatar via WhatsApp
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="outras-informacoes"> 
+                <h4>Detalhes de Personalidade e Cuidados do Pet</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="info-block">
+                            <h5>Temperamento</h5>
+                            <ul class="info-list">
+                                {% for temperamento in pet.temperamento %}
+                                    <li>{{ temperamento }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="info-block">
+                            <h5>Vive Bem em:</h5>
+                            <ul class="info-list">
+                                {% for vive_bem_em in pet.vive_bem_em %}
+                                    <li>{{ vive_bem_em }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-block">
+                            <h5>Cuidados</h5>
+                            <ul class="info-list">
+                                {% for cuidado in pet.cuidados %}
+                                    <li>{{ cuidado }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="info-block">
+                            <h5>Sociável com:</h5>
+                            <ul class="info-list">
+                                {% for sociavel in pet.sociavel_com %}
+                                    <li>{{ sociavel }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container detalhes_pet">
+            <h4>Mais Detalhes sobre o pet</h4>
+            <div class="col-md-12 pet-story-container">
+                <div class="pet-story">
+                    <h5>A História de {{ pet.nome_pet }}</h5>
+                    <p>{{ pet.historia_pet }}</p>
+                </div>
+            </div>
+        </div>
+        
+
+            <div class="situacao_pet">
+            {% if pet.usuario == request.user %}
+            <form method="POST" action="{% url 'ver_pet' pet.id %}" class="adopt-button-container">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Marcar Pet como Adotado</button>
+                <p style="margin-top: 10px; font-size: 1rem;">Seu Pet foi adotado? marque-o como adotado para que possamos saber</p>
+            </form>
+           </div>
+        {% endif %}
+        </div>
+
+        {% if pet.usuario != request.user %}
+        <!-- Botão Adotar -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adoptionModal">
+            Adotar
+        </button>
+    
+        <!-- Modal -->
+        <div class="modal fade" id="adoptionModal" tabindex="-1" role="dialog" aria-labelledby="adoptionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="adoptionModalLabel">Quer adotar?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Para adotar esse pet ou saber mais sobre ele, entre em contato com o protetor:</p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:{{ pet.usuario.email }}">{{ pet.usuario.email }}</a></p>
+                        <p><i class="fas fa-phone"></i> <a href="tel:+55{{ pet.usuario.userprofile.telefone }}">+55 {{ pet.usuario.userprofile.telefone }}</a></p>
+                        
+                        <p>
+                            <a href="https://api.whatsapp.com/send?phone=+55{{ pet.usuario.userprofile.telefone | default:'' }}" target="_blank" class="btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                Contatar via WhatsApp
+                            </a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+</div>
+<!-- Adicione este script JavaScript antes do fechamento do bloco 'content' -->
+<script>
+    // Função para trocar a imagem principal com a imagem secundária clicada
+    function trocarImagemPrincipal(imagemUrl) {
+        // Captura o elemento da imagem principal
+        var imagemPrincipal = document.querySelector('.imagem_principal img');
+
+        // Salva o src atual da imagem principal para trocar com a imagem secundária clicada
+        var tempSrc = imagemPrincipal.src;
+
+        // Troca o src da imagem principal com a imagem secundária clicada
+        imagemPrincipal.src = imagemUrl;
+
+        // Atualiza o src da imagem secundária clicada com o src da imagem principal original
+        event.target.src = tempSrc;
+    }
+
+    // Aguarda o documento estar completamente carregado antes de atribuir o evento de clique às imagens secundárias
+    document.addEventListener('DOMContentLoaded', function () {
+        // Obtém todas as imagens secundárias
+        var imagensSecundarias = document.querySelectorAll('.carousel-item img');
+
+        // Itera sobre cada imagem secundária para adicionar o evento de clique
+        imagensSecundarias.forEach(function (imagem) {
+            imagem.addEventListener('click', function () {
+                trocarImagemPrincipal(imagem.src);
+            });
+        });
+    });
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
+

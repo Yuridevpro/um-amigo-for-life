@@ -1,0 +1,17 @@
+@media only screen and (max-width: 768px) {
+    .profile-container {
+    width: 90%;
+   
+    }
+
+
+    .header-box{
+        font-size: 35px;
+        width: 65vw;
+        
+    }
+    .box {
+        width: 100vw;
+        margin-top: 100px;
+    }
+}

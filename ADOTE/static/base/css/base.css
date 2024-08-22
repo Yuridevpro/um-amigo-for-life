@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&family=Montserrat:wght@400;700&display=swap');
+
+:root {
+    --font-nav: 'Montserrat', sans-serif; /* Fonte para a navbar */
+    --font-paragraph: Arial, sans-serif; /* Fonte para os parágrafos */
+    --font-title: 'Patua One', serif; /* Fonte para os títulos */
+ 
+    --color-primary: #7B50A6; /* Cor primária */
+    --color-secondary: #d0b5d9; /* Cor secundária */
+    --color-background: #dbdbe38f; /* Cor de fundo */
+    --color-text: #6a3f96; /* Cor do texto */
+    --color-footer-bg: #794FA3; /* Cor do fundo do rodapé */
+    --color-box-bg: #f8f8fb80; /* Cor do fundo das caixas */
+
+    --text-shadow: 0 0 10px rgba(255, 255, 255, 0.337),
+                   0 0 20px rgba(255, 255, 255, 0.382),
+                   0 0 30px rgba(255, 255, 255, 0.445); /* Sombra de texto */
+    --box-shadow: 2px 2px 10px rgba(144, 133, 133, 0.334); /* Sombra das caixas */
+}
+
+.box {
+    color: var(--color-primary);
+    padding: 20px;
+    width: 80vw;
+    background-color: var(--color-box-bg);
+    box-shadow: var(--box-shadow); /* Ajuste na sombra */
+    margin: 100px 0;
+    border-radius: 5px;
+    min-height: 400px;
+}
+
+/* Estilos para a navbar */
+.navbar-expand-lg {
+    position: fixed; /* Torna a navbar fixa na tela */
+    top: 0; /* Ajusta a posição no topo da tela */
+    left: 0; /* Ajusta a posição à esquerda da tela */
+    right: 0; /* Ajusta a posição à direita da tela */
+    background-color: var(--color-secondary);
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-text);
+    padding: 10px;
+    box-shadow: var(--box-shadow);
+    z-index: 1000; /* Garante que a navbar esteja acima de outros elementos */
+}
+
+.nav-link {
+    margin: 0 40px;
+}
+
+.navbar-expand-lg .nav-link {
+    color: var(--color-primary); /* Cor do texto base */
+    text-shadow: var(--text-shadow); /* Sombra de texto */
+    font-family: var(--font-nav); /* Fonte da navbar */
+}
+
+.navbar-expand-lg .nav-link:hover {
+    text-shadow: 0 0 1px rgba(139, 92, 157, 0.2),
+                 0 0 1px rgba(149, 113, 183, 0.34),
+                 0 0 25px rgba(197, 197, 197, 0.6); /* Sombra de texto ao passar o mouse */
+}
+
+body {
+    background: linear-gradient(135deg, #5932931a 0%, #5932931a 50%);
+    box-sizing: border-box;
+    background-color: var(--color-background);
+    font-family: var(--font-paragraph); /* Fonte para os parágrafos */
+}
+
+.logo {
+    width: 80px;
+   margin-left: 50px;
+}
+
+.wrapper {
+    margin-top: 3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-box {
+    text-align: center;
+    background-color: none;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 40vw;
+    font-size: 45px;
+    color: var(--color-primary); /* Tom de vinho */
+    text-shadow: 0 0 8px rgba(255, 119, 255, 0.284),
+                 0 0 15px rgba(255, 119, 255, 0.255),
+                 0 0 20px rgba(255, 119, 255, 0.204); /* Efeito de brilho */
+    margin: auto;
+    font-family: var(--font-title); /* Fonte para os títulos */
+}
+
+.navbar-nav {
+    display: flex; /* Habilita flexbox para a lista */
+    justify-content: flex-start; /* Alinha os itens flexbox para o início (esquerda) */
+    align-items: start; /* Centraliza os itens verticalmente */
+}
+
+.dropdown {
+    margin-right:70px;
+}
+
+/* Estilos para o rodapé */
+.footer {
+    background-color: var(--color-footer-bg);
+    color: white;
+    box-shadow: var(--box-shadow);
+    padding: 20px 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer h5 {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    font-family: var(--font-title); /* Fonte para os títulos */
+}
+
+.footer p, .footer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: var(--font-paragraph); /* Fonte para os parágrafos */
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.social-icons {
+    margin-top: 10px;
+}
+
+.social-icons a {
+    margin-right: 10px;
+}
+
+.social-icons img {
+    width: 24px;
+    height: 24px;
+}

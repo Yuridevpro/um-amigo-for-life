@@ -1,0 +1,207 @@
+{% load static %}
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'usuarios/cadastro/css/cadastro.css' %}" rel="stylesheet">
+    <link href="{% static 'usuarios/cadastro/css/cadastro_mdq.css' %}" rel="stylesheet">
+
+    <style>
+@media only screen and (max-width: 768px) {
+    .btn-custom-primary.google,
+    .btn-custom-primary.face {
+        /* Diminui o padding horizontal */
+        padding: 10px 15px !important; 
+    }
+
+    /* Diminui o espaçamento vertical entre os botões */
+    .d-flex.justify-content-center.flex-column.gap-3 {
+        gap: 1px !important ;
+    }
+}
+.btn-custom-primary.google {
+  background-color: #4285F4; /* Azul do Google */
+  color: #fff; /* Branco */
+  padding: 12px 24px; 
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 10px;
+  border: none; /* Remove a borda */
+
+}
+
+/* Estilos específicos para o botão do Facebook */
+.btn-custom-primary.face {
+  background-color: #3b5998; /* Azul do Facebook */
+  color: #fff; /* Branco */
+  padding: 12px 24px; 
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 10px;
+  border: none; /* Remove a borda */
+}
+/* Estilos para os botões ao passar o mouse */
+.btn-custom-primary.google:hover {
+  background-color: #3474E0; /* Azul mais escuro */
+}
+
+.btn-custom-primary.face:hover {
+  background-color: #29487d; /* Azul mais escuro */
+}
+    </style>
+</head>
+<body>
+   
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5 col-12 bg-side">
+                <div class='header'>
+                        <img class="logo-top" src="{% static 'usuarios/cadastro/css/img/logo.png' %}">
+
+                        <header>Nos ajude a salvar vidas</header>
+                </div>
+                <div class="body-form">
+                    {% if messages %}
+                        <br>
+                        {% for message in messages %}
+                            <div class="alert {{message.tags}}">
+                                {{message}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <h2>Novo usuário? Adicione suas informações</h2>
+
+                    <div class="d-flex justify-content-center flex-column flex-md-row gap-3"> 
+                        <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-custom-primary google">Login com Google</a>
+                        <a href="{% url 'social:begin' 'facebook' %}" class="btn btn-custom-primary face">Login com Facebook</a>
+                    </div>
+                     
+                    <h4 style="text-align: center; margin-top: 20px;">Ou use o formulário abaixo</h4>
+                    <hr>
+                    <form action="{% url 'cadastro' %}" method="POST"> {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome:</label>
+                            <input type="text" class="form-control" id="nome" placeholder="Digite seu nome..." name="nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sobrenome" class="form-label">Sobrenome:</label>
+                            <input type="text" class="form-control" id="sobrenome" placeholder="Digite seu sobrenome..." name="sobrenome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail:</label>
+                            <input type="email" class="form-control" id="email" placeholder="Digite seu email..." name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefone" class="form-label">Telefone:</label>
+                            <input type="tel" class="form-control" id="telefone" placeholder="Digite seu telefone..." name="telefone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="estado" class="form-label">Estado:</label>
+                            <select class="form-select" id="estado" name="estado" required>
+                                <option value="">Selecione o estado...</option>
+                            </select>
+                            <input type="hidden" id="estado_id" name="estado_id">  <!--  -->
+                            <input type="hidden" id="estado_nome" name="estado_nome">  <!--  -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="cidade" class="form-label">Cidade:</label>
+                            <select class="form-select" id="cidade" name="cidade" required>
+                                <option value="">Selecione a cidade...</option>
+                            </select>
+                            <input type="hidden" id="cidade_nome" name="cidade_nome">  <!--  -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha:</label>
+                            <input type="password" class="form-control" id="senha" placeholder="Digite sua senha..." name="senha" required>
+                            <small class="form-text text-muted" style="color: rgba(255, 255, 255, 0.725) !important;">(A senha deve ter no mínimo 8 caracteres, incluindo letras e números.)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmar_senha" class="form-label">Confirmar senha:</label>
+                            <input type="password" class="form-control" id="confirmar_senha" placeholder="Digite sua senha..." name="confirmar_senha" required>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-custom-primary">SALVAR</button>
+                        </div>
+                        <a href="{% url 'login' %}" class="link-float">Já tenho uma conta</a>
+                       
+
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-7 d-none d-md-flex fundo">
+                
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+                method: 'GET',
+                success: function(data) {
+                    data.sort(function(a, b) {
+                        return a.nome.localeCompare(b.nome);
+                    });
+                    $.each(data, function(key, estado) {
+                        $('#estado').append($('<option>', { 
+                            value: estado.id,
+                            text : estado.nome 
+                        }));
+                    });
+                }
+            });
+
+            $('#estado').change(function() {
+                var estadoId = $(this).val();
+                var estadoNome = $(this).find(':selected').text(); // Obtém o nome do estado
+                if (estadoId) {
+                    $.ajax({
+                        url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados/' + estadoId + '/municipios',
+                        method: 'GET',
+                        success: function(data) {
+                            $('#cidade').empty().append($('<option>', {
+                                value: '',
+                                text: 'Selecione a cidade...'
+                            }));
+                            data.sort(function(a, b) {
+                                return a.nome.localeCompare(b.nome);
+                            });
+                            $.each(data, function(key, cidade) {
+                                $('#cidade').append($('<option>', { 
+                                    value: cidade.nome,
+                                    text : cidade.nome 
+                                }));
+                            });
+                        }
+                    });
+                    // **Atualiza o valor do input hidden com o ID do estado**
+                    $('#estado_id').val(estadoId);
+                    // **Atualiza o valor do input hidden com o nome do estado**
+                    $('#estado_nome').val(estadoNome);
+                } else {
+                    $('#cidade').empty().append($('<option>', {
+                        value: '',
+                        text: 'Selecione a cidade...'
+                    }));
+                }
+            });
+
+            $('#cidade').change(function() {
+                var cidadeNome = $(this).find(':selected').text(); // Obtém o nome da cidade
+                // **Atualiza o valor do input hidden com o nome da cidade**
+                $('#cidade_nome').val(cidadeNome);
+            });
+        });
+    </script>
+
+</body>
+</html>
