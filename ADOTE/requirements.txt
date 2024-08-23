@@ -11,5 +11,5 @@ cryptography
 django-pagination
 PyJWT
 python-dotenv
-pip install gunicorn==20.0.4
+gunicorn==20.0.4
 
