@@ -8,7 +8,7 @@ django-templated-email==3.0.1
 psycopg2-binary==2.9.6
 charset-normalizer==3.2.0
 cryptography==41.0.2
-django-pagination==2.0.2
+django-pagination==1.0.7
 PyJWT==2.7.0
 python-dotenv==1.0.0
 gunicorn==20.1.0
