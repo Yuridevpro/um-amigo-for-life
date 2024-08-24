@@ -12,6 +12,5 @@ urlpatterns = [
     path('perfil/', include('perfil.urls')),
     path('sobre_nos/', include('sobre_nos.urls')),
     path('pagina_inicio/', include('pagina_inicio.urls')),
-    # Redirecionamento para a página home
-    path('', RedirectView.as_view(url='/pagina_inicio/home/', permanent=True)),
+    path('', RedirectView.as_view(url='/pagina_inicio/', permanent=False)),  # Redireciona para a página inicial
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
