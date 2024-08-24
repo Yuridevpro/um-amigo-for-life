@@ -121,7 +121,7 @@ ADMIN_SITE = 'adote.admin.admin.CustomAdminSite'
 
 WSGI_APPLICATION = 'adote.wsgi.application'
 
- Configuração do banco de dados PostgreSQL
+# Configuração do banco de dados PostgreSQL
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
