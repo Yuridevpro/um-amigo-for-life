@@ -12,3 +12,4 @@ django-pagination==1.0.7
 PyJWT==2.7.0
 python-dotenv==1.0.0
 gunicorn==20.1.0
+pillow==10.3.0
