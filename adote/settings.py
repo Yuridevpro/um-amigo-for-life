@@ -2,7 +2,6 @@
 from pathlib import Path
 import os
 from django.contrib.messages import constants
-
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
