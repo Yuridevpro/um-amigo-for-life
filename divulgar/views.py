@@ -4,7 +4,6 @@ from .models import Pet, PetImage
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-import phonenumbers
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 

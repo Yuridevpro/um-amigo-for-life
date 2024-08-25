@@ -2,7 +2,7 @@
 from pathlib import Path
 import os
 from django.contrib.messages import constants
-from decouple import config
+
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -121,7 +121,7 @@ ADMIN_SITE = 'adote.admin.admin.CustomAdminSite'
 
 WSGI_APPLICATION = 'adote.wsgi.application'
 
- Configuração do banco de dados PostgreSQL
+
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
