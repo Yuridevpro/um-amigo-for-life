@@ -165,11 +165,26 @@ USE_I18N = True
 
 USE_TZ = True
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'templates/static'),)
-STATIC_ROOT = os.path.join('static')
+
+# Define o caminho absoluto para STATIC_ROOT
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Inclui a pasta 'static' de todos os aplicativos
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'adotar', 'static'),
+    os.path.join(BASE_DIR, 'divulgar', 'static'),
+    os.path.join(BASE_DIR, 'pagina_inicio', 'static'),
+    os.path.join(BASE_DIR, 'perfil', 'static'),
+    os.path.join(BASE_DIR, 'sobre_nos', 'static'),
+    os.path.join(BASE_DIR, 'usuarios', 'static'), 
+]
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
