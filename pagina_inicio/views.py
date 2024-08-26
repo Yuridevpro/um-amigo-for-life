@@ -27,7 +27,9 @@ def home(request):
 
     choices_especie = Pet.choices_especie
     choices_tamanho = Pet.choices_tamanho
-
+    
+    pets_list = Pet.objects.all().order_by('-created_at')
+    
     paginator = Paginator(pets_list, 6)
     page = request.GET.get('page') or 1
 
