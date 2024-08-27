@@ -60,7 +60,7 @@ background-color: #E8E8EE;
     .imagens_pet .imagem_principal img,
     .imagens_pet .imagem_secundaria img {
         border: 10px solid transparent; /* Ajuste conforme necessário */
-        border-image: url("{% static 'divulgar/ver_pet/css/img/image_border.png' %}") 30 round; /* Ajuste conforme necessário */
+        border-image: url("image_border.png") 30 round; /* Ajuste conforme necessário */
         /* Border image width should match the original image border size */
     }
 
