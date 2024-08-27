@@ -13,7 +13,7 @@ import requests
 
 @login_required
 def listar_pets(request):
-    pets_list = Pet.objects.filter(status__in=["P"], is_active=True) 
+    pets_list = Pet.objects.filter(status__in=["P"], is_active=True).order_by('-created_at')  # Ordena por data_criacao decrescente 
 
     # Obter os valores de filtro do formulário
     estado_id = request.GET.get('estado')
