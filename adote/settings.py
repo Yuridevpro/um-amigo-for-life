@@ -178,12 +178,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Inclui a pasta 'static' de todos os aplicativos (CORRIGIDO!)
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static', 'pagina_inicio'),
     os.path.join(BASE_DIR, 'static', 'adotar'),
     os.path.join(BASE_DIR, 'static', 'divulgar'),
-    os.path.join(BASE_DIR, 'static', 'pagina_inicio'),
     os.path.join(BASE_DIR, 'static', 'perfil'),
     os.path.join(BASE_DIR, 'static', 'sobre_nos'),
     os.path.join(BASE_DIR, 'static', 'usuarios'), 
+    os.path.join(BASE_DIR, 'static', 'admin'),
+    os.path.join(BASE_DIR, 'static', 'base'),
+   
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

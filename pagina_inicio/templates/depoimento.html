@@ -1,5 +1,6 @@
 <!-- depoimento.html -->
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     {% if depoimento %}
@@ -11,13 +12,7 @@
 
 
 {% block head %}
-    <style>
-        @media only screen and (max-width: 768px) {
-       .btn-danger{
-        margin-top: 15px;
-    }
-}
-    </style>
+<link href="{% static 'pagina_inicio/depoimento/css/depoimento.css' %}" rel="stylesheet">
 {% endblock  %}
     
 
