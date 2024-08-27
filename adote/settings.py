@@ -10,7 +10,7 @@ load_dotenv()  # Carrega as variáveis de ambiente do arquivo .env
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['um-amigo-for-life.onrender.com']
 
@@ -176,7 +176,7 @@ STATIC_URL = '/static/'
 # Define o caminho absoluto para STATIC_ROOT
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Inclui a pasta 'static' de todos os aplicativos (CORRIGIDO!)
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static', 'pagina_inicio'),
     os.path.join(BASE_DIR, 'static', 'adotar'),
