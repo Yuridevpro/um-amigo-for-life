@@ -136,7 +136,7 @@ DATABASES = {
 # DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
- #       'NAME': BASE_DIR / 'db.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
 #    }
 # }
 
@@ -168,27 +168,9 @@ USE_TZ = True
 from pathlib import Path
 
 # ... outras configurações ...
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 STATIC_URL = '/static/'
-
-# Define o caminho absoluto para STATIC_ROOT
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static', 'pagina_inicio'),
-    os.path.join(BASE_DIR, 'static', 'adotar'),
-    os.path.join(BASE_DIR, 'static', 'divulgar'),
-    os.path.join(BASE_DIR, 'static', 'perfil'),
-    os.path.join(BASE_DIR, 'static', 'sobre_nos'),
-    os.path.join(BASE_DIR, 'static', 'usuarios'), 
-    os.path.join(BASE_DIR, 'static', 'admin'),
-    os.path.join(BASE_DIR, 'static', 'base'),
-   
-]
-
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'templates/static'),)
+STATIC_ROOT = os.path.join('static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
