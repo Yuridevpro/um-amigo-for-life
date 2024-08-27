@@ -165,6 +165,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+from pathlib import Path
+
+# ... outras configurações ...
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = '/static/'
@@ -172,14 +176,14 @@ STATIC_URL = '/static/'
 # Define o caminho absoluto para STATIC_ROOT
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Inclui a pasta 'static' de todos os aplicativos
+# Inclui a pasta 'static' de todos os aplicativos (CORRIGIDO!)
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'adotar', 'static'),
-    os.path.join(BASE_DIR, 'divulgar', 'static'),
-    os.path.join(BASE_DIR, 'pagina_inicio', 'static'),
-    os.path.join(BASE_DIR, 'perfil', 'static'),
-    os.path.join(BASE_DIR, 'sobre_nos', 'static'),
-    os.path.join(BASE_DIR, 'usuarios', 'static'), 
+    os.path.join(BASE_DIR, 'static', 'adotar'),
+    os.path.join(BASE_DIR, 'static', 'divulgar'),
+    os.path.join(BASE_DIR, 'static', 'pagina_inicio'),
+    os.path.join(BASE_DIR, 'static', 'perfil'),
+    os.path.join(BASE_DIR, 'static', 'sobre_nos'),
+    os.path.join(BASE_DIR, 'static', 'usuarios'), 
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
