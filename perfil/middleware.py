@@ -17,3 +17,4 @@ class ProfileCompleteMiddleware:
                 elif request.path != '/perfil/editar_perfil/' and request.path != '/auth/logout/' and request.path != '/auth/login/':  # Verifica se a página atual não é a página de edição de perfil, logout ou login
                     return redirect(reverse('editar_perfil'))
         return self.get_response(request)
+    
