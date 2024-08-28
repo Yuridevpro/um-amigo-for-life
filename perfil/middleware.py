@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from django.contrib.auth import logout
-
+from django.urls import reverse
 class ProfileCompleteMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -15,5 +15,5 @@ class ProfileCompleteMiddleware:
                     logout(request)  # Realiza o logout
                     return redirect('login')  # Redireciona para a página de login
                 elif request.path != '/perfil/editar_perfil/' and request.path != '/auth/logout/' and request.path != '/auth/login/':  # Verifica se a página atual não é a página de edição de perfil, logout ou login
-                    return redirect('editar_perfil')
+                    return redirect(reverse('editar_perfil'))
         return self.get_response(request)
