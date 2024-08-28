@@ -11,14 +11,13 @@ def create_profile(strategy, details, user=None, *args, **kwargs):
     if user:
         try:
             profile = UserProfile.objects.get(user=user)
-            # Como o middleware já lida com a verificação do perfil, você pode omitir essa verificação aqui.
             login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
             return redirect(reverse('home'))
         except UserProfile.DoesNotExist:
             profile = UserProfile(user=user, email=details.get('email'))
             profile.save()
             login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
-            return redirect(reverse('editar_perfil'))
+            return redirect(reverse('home'))
 
     return {'user': user}
 
@@ -26,7 +25,7 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
     email = details.get('email') or backend.strategy.session_get('email')
 
     if not email:
-        return {'user': None, 'redirect': reverse('editar_perfil')}
+        return {'user': None, 'redirect': reverse('login')}
 
     try:
         existing_user = User.objects.get(email=email)
@@ -60,4 +59,4 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         )
         backend.strategy.storage.user.create_social_auth(user=user, provider=backend.name, uid=details.get('uid'))
         login(backend.strategy.request, user, backend='social_core.backends.' + backend.name)
-        return {'user': user, 'redirect': reverse('editar_perfil')}
+        return {'user': user, 'redirect': reverse('home')}
