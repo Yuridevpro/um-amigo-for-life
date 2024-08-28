@@ -13,6 +13,7 @@ SUPERUSER_PASSWORD = os.getenv('SUPERUSER_PASSWORD')
 
 def create_superuser():
     User = get_user_model()
+    print(f"Verificando se o superusuário '{SUPERUSER_USERNAME}' existe...")
     if not User.objects.filter(username=SUPERUSER_USERNAME).exists():
         User.objects.create_superuser(SUPERUSER_USERNAME, SUPERUSER_EMAIL, SUPERUSER_PASSWORD)
         print("Superusuário criado com sucesso!")
@@ -22,7 +23,7 @@ def create_superuser():
 if __name__ == '__main__':
     # Configure o ambiente Django
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'adote.settings')
-
+    
     try:
         # Configurar Django
         import django
