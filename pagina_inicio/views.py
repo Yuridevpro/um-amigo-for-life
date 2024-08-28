@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 
 def home(request):
-    pets_list = Pet.objects.filter(status__in=["P"], is_active=True)
+    pets_list = Pet.objects.filter(status__in=["P"], is_active=True).order_by('-created_at')  # Ordena por data_criacao decrescente 
     estado_id = request.GET.get('estado')
     cidade_nome = request.GET.get('cidade')
     tamanho = request.GET.get('tamanho')
