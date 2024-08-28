@@ -3,7 +3,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from storages.backends.s3boto3 import S3Boto3Storage
+from storages.backends import s3boto3
+s3_storage = s3boto3.S3Boto3Storage()
+
+
 class Pet(models.Model):
     choices_status = (('P', 'Para adoção'), ('A', 'Adotado'))
     choices_especie = (('Cachorro', 'Cachorro'), ('Gato', 'Gato'))
@@ -46,7 +49,7 @@ class Pet(models.Model):
     vive_bem_em = models.JSONField(default=list, blank=True)
     temperamento = models.JSONField(default=list, blank=True)
     sociavel_com = models.JSONField(default=list, blank=True)
-    foto_principal = models.ImageField(upload_to='pet_images/', storage=S3Boto3Storage(), null=True, blank=True)
+    foto_principal = models.ImageField(upload_to='pet_images/', storage=s3_storage, null=True, blank=True)
     fotos_secundarias = models.ManyToManyField('PetImage', blank=True, related_name='secondary_images')
     telefone = models.CharField(max_length=20, null=True, blank=True)
     is_active = models.BooleanField(default=True)
