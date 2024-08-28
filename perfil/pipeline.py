@@ -49,7 +49,7 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         # Associa o novo provedor à conta existente
         backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
         login(backend.strategy.request, existing_user, backend='social_core.backends.' + backend.name)
-        return {'user': existing_user, 'redirect': reverse('home')}
+        return {'user': existing_user, 'redirect': reverse('social:home')}
 
     except User.DoesNotExist:
         # Cria um novo usuário e associa o provedor
@@ -60,4 +60,4 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         )
         backend.strategy.storage.user.create_social_auth(user=user, provider=backend.name, uid=details.get('uid'))
         login(backend.strategy.request, user, backend='social_core.backends.' + backend.name)
-        return {'user': user, 'redirect': reverse('editar_perfil')}
+        return {'user': user, 'redirect': reverse('social:editar_perfil')}
