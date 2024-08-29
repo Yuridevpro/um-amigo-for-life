@@ -27,24 +27,24 @@ class SeparateAdminSessionMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Verifica se o usuário está acessando o Django Admin
+        # Verifica se o usuário está acessando a página do Django Admin
         if request.path.startswith('/admin/'):
-            # Define um nome de cookie separado para a sessão do admin
-            request.session.cookie_name = 'admin_sessionid'
-            request.session.cookie_path = '/admin/'
+            # Define o nome e o caminho do cookie de sessão específico para o admin
+            request.session.set_test_cookie()
+            request.session.set_cookie(
+                settings.ADMIN_SESSION_COOKIE_NAME,
+                request.session.session_key,
+                path=settings.ADMIN_SESSION_COOKIE_PATH
+            )
         else:
-            # Usa o cookie de sessão padrão para o resto do site
-            request.session.cookie_name = settings.SESSION_COOKIE_NAME
-            request.session.cookie_path = settings.SESSION_COOKIE_PATH
+            # Define o nome e o caminho do cookie de sessão para o resto do site
+            request.session.set_cookie(
+                settings.SESSION_COOKIE_NAME,
+                request.session.session_key,
+                path=settings.SESSION_COOKIE_PATH
+            )
 
         response = self.get_response(request)
-
-        # Aplica o cookie correto à resposta
-        response.set_cookie(
-            request.session.cookie_name,
-            request.session.session_key,
-            path=request.session.cookie_path
-        )
 
         return response
 

@@ -92,16 +92,17 @@ MIDDLEWARE = [
 
 
 
-# Configuração padrão de cookies para o resto do site
+# Configurações de cookies para o site principal
 SESSION_COOKIE_NAME = 'sessionid'
 SESSION_COOKIE_PATH = '/'
 
-# Configuração de cookies para o Django Admin
+# Configurações de cookies para o Django Admin
 ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
 ADMIN_SESSION_COOKIE_PATH = '/admin/'
 
-# Configura a URL raiz do projeto
+# Outras configurações importantes
 ROOT_URLCONF = 'adote.urls'
+
 
 
 
