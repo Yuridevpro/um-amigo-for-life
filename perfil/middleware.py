@@ -19,28 +19,47 @@ class ProfileCompleteMiddleware:
         return self.get_response(request)
 
 from django.conf import settings
+from django.utils.deprecation import MiddlewareMixin
 
-from django.conf import settings
-
-class AdminSessionMiddleware:
+class AdminSessionMiddleware(MiddlewareMixin):
     """
     Middleware para definir um cookie de sessão separado para o Django Admin.
     """
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        # Verifica se o usuário está acessando o admin
+    def process_request(self, request):
+        # Verifica se o usuário está acessando o Django Admin
         if request.path.startswith('/admin/'):
             # Usar um cookie de sessão separado para o admin
-            request.session._session_key = request.COOKIES.get(settings.ADMIN_SESSION_COOKIE_NAME)
-            request.META['CSRF_COOKIE'] = settings.ADMIN_CSRF_COOKIE_NAME  # Define o cookie CSRF para o admin
-            request.session.set_cookie(settings.ADMIN_SESSION_COOKIE_NAME, path=settings.ADMIN_SESSION_COOKIE_PATH)
+            admin_session_key = request.COOKIES.get(settings.ADMIN_SESSION_COOKIE_NAME)
+            if admin_session_key:
+                request.session._session_key = admin_session_key  # Atribui o cookie de sessão do admin ao request
+
+            # Define o cookie CSRF para o admin
+            request.META['CSRF_COOKIE'] = settings.ADMIN_CSRF_COOKIE_NAME
         else:
             # Usar o cookie de sessão padrão para o resto do site
-            request.session.set_cookie(settings.SESSION_COOKIE_NAME, path='/')
-            request.META['CSRF_COOKIE'] = settings.CSRF_COOKIE_NAME  # Define o cookie CSRF padrão
+            session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+            if session_key:
+                request.session._session_key = session_key  # Atribui o cookie de sessão padrão ao request
 
-        response = self.get_response(request)
+            # Define o cookie CSRF padrão
+            request.META['CSRF_COOKIE'] = settings.CSRF_COOKIE_NAME
+
+    def process_response(self, request, response):
+        # Verifica se o usuário está acessando o Django Admin
+        if request.path.startswith('/admin/'):
+            # Configura o cookie de sessão para o admin
+            response.set_cookie(
+                settings.ADMIN_SESSION_COOKIE_NAME,
+                request.session._session_key,
+                path=settings.ADMIN_SESSION_COOKIE_PATH
+            )
+        else:
+            # Configura o cookie de sessão padrão para o resto do site
+            response.set_cookie(
+                settings.SESSION_COOKIE_NAME,
+                request.session._session_key,
+                path='/'
+            )
         return response
+
 
