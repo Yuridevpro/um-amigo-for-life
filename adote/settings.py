@@ -92,37 +92,18 @@ MIDDLEWARE = [
 
 
 
+# Configuração padrão de cookies para o resto do site
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_PATH = '/'
 
-SESSION_COOKIE_NAME = 'app_sessionid'
+# Configuração de cookies para o Django Admin
 ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
+ADMIN_SESSION_COOKIE_PATH = '/admin/'
 
-# Configurações de segurança para cookies
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-ADMIN_SESSION_COOKIE_SECURE = True
-ADMIN_CSRF_COOKIE_SECURE = True
-
-# Configuração da URL raiz
+# Configura a URL raiz do projeto
 ROOT_URLCONF = 'adote.urls'
 
-# Configurações adicionais recomendadas para produção
-SECURE_HSTS_SECONDS = 31536000  # 1 ano
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_SSL_REDIRECT = True
-SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    },
-    'admin': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    }
-}
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'default'
 
 
 TEMPLATES = [
