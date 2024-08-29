@@ -33,6 +33,9 @@ INSTALLED_APPS = [
     'social_django',
 ]
 
+SOCIAL_AUTH_UID_LENGTH = 255
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+SOCIAL_AUTH_ASSOCIATE_BY_EMAIL = False
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
@@ -83,7 +86,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
-    'perfil.middleware.ProfileCompleteMiddleware',
+  
 ]
 
 
