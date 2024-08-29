@@ -56,7 +56,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
 SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET')
 
-SOCIAL_AUTH_URL_NAMESPACE = 'socialldede'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 LOGIN_URL = '/auth/login/'  # Certifique-se de que esta URL está correta e corresponde à sua rota de login
 LOGIN_REDIRECT_URL = '/pagina_inicio/home/'  # Redireciona para a página de editar perfil após o login
 LOGOUT_REDIRECT_URL = '/auth/login/'  # URL para onde redirecionar após o logout
