@@ -3,9 +3,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+from django.views.decorators.cache import never_cache
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', never_cache(admin.site.urls)),
     path('auth/', include('usuarios.urls')),
     path('divulgar/', include('divulgar.urls')),
     path('adotar/', include('adotar.urls')),

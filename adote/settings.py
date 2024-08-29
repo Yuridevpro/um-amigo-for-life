@@ -87,31 +87,43 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
-    'perfil.middleware.AdminSessionMiddleware',  # Adicione esta linha
+    'perfil.middleware.SeparateAdminSessionMiddleware',
 ]
 
 
 
 
-# Nome padrão do cookie de sessão para a aplicação principal
-SESSION_COOKIE_NAME = 'sessionid'
-
-# Configuração de cookies para o Django Admin
+SESSION_COOKIE_NAME = 'app_sessionid'
 ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
-ADMIN_SESSION_COOKIE_PATH = '/admin/'  # Garante que o cookie é usado apenas no admin
 
-# CSRF cookies separados
-ADMIN_CSRF_COOKIE_NAME = 'admin_csrftoken'  # Cookie CSRF para o admin
-CSRF_COOKIE_NAME = 'web_csrftoken'  # Cookie CSRF para o site principal
+# Configurações de segurança para cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+ADMIN_SESSION_COOKIE_SECURE = True
+ADMIN_CSRF_COOKIE_SECURE = True
 
-
-
-SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-ADMIN_SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-ADMIN_CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-
+# Configuração da URL raiz
 ROOT_URLCONF = 'adote.urls'
+
+# Configurações adicionais recomendadas para produção
+SECURE_HSTS_SECONDS = 31536000  # 1 ano
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'admin': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+
 
 TEMPLATES = [
     {
