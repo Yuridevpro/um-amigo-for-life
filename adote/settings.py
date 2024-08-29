@@ -78,7 +78,7 @@ SOCIAL_AUTH_PIPELINE = (
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Mova o WhiteNoise para logo após o SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Logo após o SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,13 +87,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
+    'perfil.middleware.AdminSessionMiddleware',  # Middleware para diferenciar sessões do admin
 ]
 
 
-SESSION_COOKIE_NAME = 'web_sessionid'
-CSRF_COOKIE_NAME = 'web_csrftoken'
+
+# Nome padrão do cookie de sessão para a aplicação principal
+SESSION_COOKIE_NAME = 'sessionid'
+
+# Configuração de cookies para o Django Admin
 ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
-ADMIN_CSRF_COOKIE_NAME = 'admin_csrftoken'
+ADMIN_SESSION_COOKIE_PATH = '/admin/'  # Garante que o cookie é usado apenas no admin
+
+# CSRF cookies separados
+ADMIN_CSRF_COOKIE_NAME = 'admin_csrftoken'  # Cookie CSRF para o admin
+CSRF_COOKIE_NAME = 'web_csrftoken'  # Cookie CSRF para o site principal
+
+
 
 SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
 CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
