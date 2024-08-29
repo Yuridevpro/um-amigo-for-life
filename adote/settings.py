@@ -78,7 +78,7 @@ SOCIAL_AUTH_PIPELINE = (
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Logo após o SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Mova o WhiteNoise para logo após o SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,8 +87,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
-    'perfil.middleware.AdminSessionMiddleware',  # Middleware para diferenciar sessões do admin
+    'perfil.middleware.AdminSessionMiddleware',  # Adicione esta linha
 ]
+
 
 
 
