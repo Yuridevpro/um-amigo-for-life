@@ -22,31 +22,33 @@ class ProfileCompleteMiddleware:
 
 from django.conf import settings
 
-class SeparateAdminSessionMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
+from django.utils.deprecation import MiddlewareMixin
 
-    def __call__(self, request):
+class SeparateAdminSessionMiddleware(MiddlewareMixin):
+    def process_request(self, request):
         # Verifica se o usuário está acessando a página do Django Admin
         if request.path.startswith('/admin/'):
-            # Define o nome e o caminho do cookie de sessão específico para o admin
-            request.session.set_test_cookie()
-            request.session.set_cookie(
+            # Define um nome de cookie de sessão específico para o Django Admin
+            request.session._session_key = f"admin_{request.session.session_key}"
+        else:
+            # Garante que sessões normais não sejam afetadas
+            request.session._session_key = f"user_{request.session.session_key}"
+
+    def process_response(self, request, response):
+        # Define o cookie de sessão específico para o Django Admin
+        if request.path.startswith('/admin/'):
+            response.set_cookie(
                 settings.ADMIN_SESSION_COOKIE_NAME,
                 request.session.session_key,
                 path=settings.ADMIN_SESSION_COOKIE_PATH
             )
         else:
-            # Define o nome e o caminho do cookie de sessão para o resto do site
-            request.session.set_cookie(
+            # Define o cookie de sessão para o resto do site
+            response.set_cookie(
                 settings.SESSION_COOKIE_NAME,
                 request.session.session_key,
                 path=settings.SESSION_COOKIE_PATH
             )
 
-        response = self.get_response(request)
-
         return response
-
-
 

@@ -100,6 +100,7 @@ SESSION_COOKIE_PATH = '/'
 ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
 ADMIN_SESSION_COOKIE_PATH = '/admin/'
 
+
 # Outras configurações importantes
 ROOT_URLCONF = 'adote.urls'
 
