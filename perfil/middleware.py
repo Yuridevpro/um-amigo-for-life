@@ -19,47 +19,19 @@ class ProfileCompleteMiddleware:
         return self.get_response(request)
 
 
+
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
-from importlib import import_module
+
 class SeparateAdminSessionMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.path.startswith('/admin/'):
-            request.session_cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
-            request.session_engine = import_module(settings.SESSION_ENGINE)
-            request.admin_session = request.session_engine.SessionStore()
+            # Configura o backend e cache específicos para sessões do admin
+            request.session.engine = settings.ADMIN_SESSION_ENGINE
+            request.session.cache_alias = settings.ADMIN_SESSION_CACHE_ALIAS
+            request.session.cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
         else:
-            request.session_cookie_name = settings.SESSION_COOKIE_NAME
-            request.session_engine = import_module(settings.SESSION_ENGINE)
-            request.user_session = request.session_engine.SessionStore()
-
-        # Carrega a chave de sessão ativa pela nova chave do cookie, se existir
-        session_key = request.COOKIES.get(request.session_cookie_name)
-        if request.path.startswith('/admin/'):
-            request.admin_session.session_key = session_key
-            request.session = request.admin_session
-        else:
-            request.user_session.session_key = session_key
-            request.session = request.user_session
-
-    def process_response(self, request, response):
-        # Define o cookie correto na resposta, conforme o tipo de sessão
-        if request.path.startswith('/admin/'):
-            response.set_cookie(
-                request.session_cookie_name,
-                request.admin_session.session_key,
-                httponly=True,
-                secure=request.is_secure(),
-                samesite='Lax',
-                path=settings.ADMIN_SESSION_COOKIE_PATH
-            )
-        else:
-            response.set_cookie(
-                request.session_cookie_name,
-                request.user_session.session_key,
-                httponly=True,
-                secure=request.is_secure(),
-                samesite='Lax',
-                path=settings.SESSION_COOKIE_PATH
-            )
-        return response
+            # Configura o backend e cache para sessões normais
+            request.session.engine = settings.SESSION_ENGINE
+            request.session.cache_alias = settings.SESSION_CACHE_ALIAS
+            request.session.cookie_name = settings.SESSION_COOKIE_NAME

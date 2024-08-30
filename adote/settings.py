@@ -78,7 +78,7 @@ SOCIAL_AUTH_PIPELINE = (
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Mova o WhiteNoise para logo após o SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,16 +87,38 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
-    'perfil.middleware.SeparateAdminSessionMiddleware',
+    'perfil.middleware.SeparateAdminSessionMiddleware',  # Middleware para separar sessões
 ]
 
 
-# Configurações de cookies para o site principal
-SESSION_COOKIE_NAME = 'sessionid'
-SESSION_COOKIE_PATH = '/'
 
-# Configurações de cookies para o Django Admin
-ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
+# Configuração do cache com Redis
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://red-cr92gud6l47c73bq8tk0:6379/0',  # URL do Redis para o cache principal
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+    },
+    'admin': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://red-cr92gud6l47c73bq8tk0:6379/1',  # URL do Redis para o cache do admin
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+    },
+}
+
+# Configuração de sessão para a aplicação principal
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+SESSION_COOKIE_NAME = 'sessionid'  # Nome do cookie de sessão para a aplicação principal
+
+# Configuração de sessão para o Django Admin
+ADMIN_SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+ADMIN_SESSION_CACHE_ALIAS = 'admin'
+ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'  # Nome do cookie de sessão para o Django Admin
 ADMIN_SESSION_COOKIE_PATH = '/admin/'
 
 
