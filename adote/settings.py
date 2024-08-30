@@ -102,7 +102,7 @@ MIDDLEWARE = [
 # ADMIN_SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
 # ADMIN_CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
 
-# ROOT_URLCONF = 'adote.urls'
+ROOT_URLCONF = 'adote.urls'
 
 TEMPLATES = [
     {
