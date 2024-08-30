@@ -1,7 +1,12 @@
 import redis
+import os
 
 # Conectar ao Redis
-r = redis.StrictRedis('redis://red-cr92gud6l47c73bq8tk0:6379/0', decode_responses=True)
+r = redis.StrictRedis(
+    host=os.getenv('REDIS_HOST', 'red-cr92gud6l47c73bq8tk0'),
+    port=os.getenv('REDIS_PORT', 6379),
+    db=0
+)
 
 # Testar a conexão
 try:
@@ -10,3 +15,4 @@ try:
     print("Conexão bem-sucedida!")
 except redis.ConnectionError as e:
     print("Erro ao conectar ao Redis:", e)
+
