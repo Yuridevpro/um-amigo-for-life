@@ -87,20 +87,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
-    # 'perfil.middleware.SeparateAdminSessionMiddleware',
+    'perfil.middleware.SeparateAdminSessionMiddleware',
 ]
 
 
+# Configurações de cookies para o site principal
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_PATH = '/'
 
-
-SESSION_COOKIE_NAME = 'app_sessionid'
+# Configurações de cookies para o Django Admin
 ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
+ADMIN_SESSION_COOKIE_PATH = '/admin/'
 
-
-SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-ADMIN_SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-ADMIN_CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
 
 ROOT_URLCONF = 'adote.urls'
 
