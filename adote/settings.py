@@ -92,6 +92,7 @@ MIDDLEWARE = [
 
 
 
+
 # Configurações de cookies para o site principal
 SESSION_COOKIE_NAME = 'sessionid'
 SESSION_COOKIE_PATH = '/'
