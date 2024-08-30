@@ -93,14 +93,14 @@ MIDDLEWARE = [
 
 
 
-# SESSION_COOKIE_NAME = 'app_sessionid'
-# ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
+SESSION_COOKIE_NAME = 'app_sessionid'
+ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
 
 
-# SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-# CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-# ADMIN_SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
-# ADMIN_CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
+SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
+CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
+ADMIN_SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
+ADMIN_CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
 
 ROOT_URLCONF = 'adote.urls'
 
