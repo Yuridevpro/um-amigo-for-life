@@ -93,13 +93,13 @@ MIDDLEWARE = [
 
 
 
-# Configurações de cookies para o site principal
-SESSION_COOKIE_NAME = 'sessionid'
-SESSION_COOKIE_PATH = '/'
+# # Configurações de cookies para o site principal
+# SESSION_COOKIE_NAME = 'sessionid'
+# SESSION_COOKIE_PATH = '/'
 
-# Configurações de cookies para o Django Admin
-ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
-ADMIN_SESSION_COOKIE_PATH = '/admin/'
+# # Configurações de cookies para o Django Admin
+# ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
+# ADMIN_SESSION_COOKIE_PATH = '/admin/'
 
 
 
