@@ -78,8 +78,8 @@ SOCIAL_AUTH_PIPELINE = (
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',  # Middleware de Sessão
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Mova o WhiteNoise para logo após o SecurityMiddleware
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,28 +87,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
-    # 'perfil.middleware.SeparateAdminSessionMiddleware',  # Middlewares personalizados devem vir depois de SessionMiddleware
+    'perfil.middleware.SeparateAdminSessionMiddleware',
 ]
 
 
 
 
-# # Configurações de cookies para o site principal
-# SESSION_COOKIE_NAME = 'sessionid'
-# SESSION_COOKIE_PATH = '/'
-
-# # Configurações de cookies para o Django Admin
+# SESSION_COOKIE_NAME = 'app_sessionid'
 # ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
-# ADMIN_SESSION_COOKIE_PATH = '/admin/'
 
 
+# SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
+# CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
+# ADMIN_SESSION_COOKIE_SECURE = True  # Se você estiver usando HTTPS
+# ADMIN_CSRF_COOKIE_SECURE = True  # Se você estiver usando HTTPS
 
-# Outras configurações importantes
-ROOT_URLCONF = 'adote.urls'
-
-
-
-
+# ROOT_URLCONF = 'adote.urls'
 
 TEMPLATES = [
     {
