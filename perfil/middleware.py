@@ -21,34 +21,27 @@ class ProfileCompleteMiddleware:
 
 
 from django.conf import settings
-
 from django.utils.deprecation import MiddlewareMixin
 
 class SeparateAdminSessionMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        # Verifica se o usuário está acessando a página do Django Admin
         if request.path.startswith('/admin/'):
-            # Define um nome de cookie de sessão específico para o Django Admin
-            request.session._session_key = f"admin_{request.session.session_key}"
+            # Use a sessão do admin para requisições ao admin
+            request.session_cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
         else:
-            # Garante que sessões normais não sejam afetadas
-            request.session._session_key = f"user_{request.session.session_key}"
+            # Use a sessão padrão para outras requisições
+            request.session_cookie_name = settings.SESSION_COOKIE_NAME
+
+        # Carregue a sessão correspondente ao cookie
+        session_key = request.COOKIES.get(request.session_cookie_name)
+        request.session = request.session_engine.SessionStore(session_key)
 
     def process_response(self, request, response):
-        # Define o cookie de sessão específico para o Django Admin
-        if request.path.startswith('/admin/'):
-            response.set_cookie(
-                settings.ADMIN_SESSION_COOKIE_NAME,
-                request.session.session_key,
-                path=settings.ADMIN_SESSION_COOKIE_PATH
-            )
-        else:
-            # Define o cookie de sessão para o resto do site
-            response.set_cookie(
-                settings.SESSION_COOKIE_NAME,
-                request.session.session_key,
-                path=settings.SESSION_COOKIE_PATH
-            )
-
+        # Defina o cookie da sessão correta
+        response.set_cookie(
+            request.session_cookie_name,
+            request.session.session_key,
+            path=request.path if request.path.startswith('/admin/') else '/'
+        )
         return response
 

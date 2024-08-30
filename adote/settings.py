@@ -78,8 +78,8 @@ SOCIAL_AUTH_PIPELINE = (
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Mova o WhiteNoise para logo após o SecurityMiddleware
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Middleware de Sessão
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,7 +87,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
-    'perfil.middleware.SeparateAdminSessionMiddleware',
+    'perfil.middleware.SeparateAdminSessionMiddleware',  # Middlewares personalizados devem vir depois de SessionMiddleware
 ]
 
 
@@ -99,6 +99,7 @@ SESSION_COOKIE_PATH = '/'
 # Configurações de cookies para o Django Admin
 ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
 ADMIN_SESSION_COOKIE_PATH = '/admin/'
+
 
 
 # Outras configurações importantes
