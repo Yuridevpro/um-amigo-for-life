@@ -22,13 +22,15 @@ class ProfileCompleteMiddleware:
 
 from django.utils.deprecation import MiddlewareMixin
 
-class SeparateAdminSessionMiddleware(MiddlewareMixin):
-    def process_request(self, request):
+from django.conf import settings
+
+class SeparateAdminSessionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
         if request.path.startswith('/admin/'):
-            request.session.engine = 'django.contrib.sessions.backends.cache'
-            request.session.cache_alias = 'admin'
-            request.session.cookie_name = 'admin_sessionid'
+            request.session.cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
         else:
-            request.session.engine = 'django.contrib.sessions.backends.cache'
-            request.session.cache_alias = 'default'
-            request.session.cookie_name = 'sessionid'
+            request.session.cookie_name = settings.SESSION_COOKIE_NAME
+        return self.get_response(request)
