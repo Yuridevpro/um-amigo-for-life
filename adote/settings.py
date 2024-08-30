@@ -87,7 +87,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
-    'perfil.middleware.SeparateAdminSessionMiddleware',  # Middlewares personalizados devem vir depois de SessionMiddleware
+    # 'perfil.middleware.SeparateAdminSessionMiddleware',  # Middlewares personalizados devem vir depois de SessionMiddleware
 ]
 
 

@@ -19,29 +19,29 @@ class ProfileCompleteMiddleware:
         return self.get_response(request)
 
 
-from django.conf import settings
-from django.utils.deprecation import MiddlewareMixin
+# from django.conf import settings
+# from django.utils.deprecation import MiddlewareMixin
 
-class SeparateAdminSessionMiddleware(MiddlewareMixin):
-    def process_request(self, request):
-        if request.path.startswith('/admin/'):
-            request.session_cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
-        else:
-            request.session_cookie_name = settings.SESSION_COOKIE_NAME
+# class SeparateAdminSessionMiddleware(MiddlewareMixin):
+#     def process_request(self, request):
+#         if request.path.startswith('/admin/'):
+#             request.session_cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
+#         else:
+#             request.session_cookie_name = settings.SESSION_COOKIE_NAME
 
-        # Substitui a chave de sessão ativa por aquela definida para o contexto atual
-        session_key = request.COOKIES.get(request.session_cookie_name)
-        request.session = request.session_engine.SessionStore(session_key)
+#         # Substitui a chave de sessão ativa por aquela definida para o contexto atual
+#         session_key = request.COOKIES.get(request.session_cookie_name)
+#         request.session = request.session_engine.SessionStore(session_key)
 
-    def process_response(self, request, response):
-        # Define o cookie correto na resposta, conforme o tipo de sessão
-        response.set_cookie(
-            request.session_cookie_name,
-            request.session.session_key,
-            httponly=True,
-            secure=request.is_secure(),
-            samesite='Lax',
-            path=request.path.startswith('/admin/') and settings.ADMIN_SESSION_COOKIE_PATH or settings.SESSION_COOKIE_PATH
-        )
-        return response
+#     def process_response(self, request, response):
+#         # Define o cookie correto na resposta, conforme o tipo de sessão
+#         response.set_cookie(
+#             request.session_cookie_name,
+#             request.session.session_key,
+#             httponly=True,
+#             secure=request.is_secure(),
+#             samesite='Lax',
+#             path=request.path.startswith('/admin/') and settings.ADMIN_SESSION_COOKIE_PATH or settings.SESSION_COOKIE_PATH
+#         )
+#         return response
 
