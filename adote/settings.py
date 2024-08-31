@@ -114,7 +114,7 @@ CACHES = {
 # Configuração de sessão para a aplicação principal
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
-SESSION_COOKIE_NAME = os.getenv('SESSION_COOKIE_NAME', 'sessionid')  # Nome do cookie de sessão para a aplicação principal
+SESSION_COOKIE_NAME = os.getenv('SESSION_COOKIE_NAME', 'app_sessionid')  # Novo nome do cookie de sessão para a aplicação principal
 
 # Configuração de sessão para o Django Admin
 ADMIN_SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
