@@ -25,7 +25,7 @@
 
 {% block nav-global %}
     {% if user.is_active and user.is_staff %}
-        <a href="{% url 'home' %}">Voltar para o site</a>
+        <a href="{% url 'login' %}">Voltar para tela de login do app</a>
      
     {% endif %}
 {% endblock %}
