@@ -29,7 +29,7 @@ def cadastro(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
             messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página, faça o cadastro com outra conta e acesse.")
-            return redirect('/home')  
+            return redirect('/auth/login/')  
         return redirect('/divulgar/novo_pet')
 
     # Processa a requisição GET (exibe o formulário de cadastro)
