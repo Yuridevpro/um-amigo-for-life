@@ -76,11 +76,11 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'perfil.middleware.CustomSessionMiddleware',  # Certifique-se que esteja aqui
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Adicionei o SessionMiddleware aqui
+    'perfil.middleware.CustomSessionMiddleware',  # Este continua aqui
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -89,6 +89,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
 ]
+
 
 import os
 
