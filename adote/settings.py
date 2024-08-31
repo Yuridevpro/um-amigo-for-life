@@ -88,6 +88,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
     'perfil.middleware.SeparateAdminSessionMiddleware',
+    'perfil.middleware.AdminSessionCacheMiddleware',
 ]
 
 

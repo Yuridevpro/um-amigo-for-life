@@ -21,7 +21,6 @@ class ProfileCompleteMiddleware:
 
 
 from django.utils.deprecation import MiddlewareMixin
-
 from django.conf import settings
 
 class SeparateAdminSessionMiddleware:
@@ -33,4 +32,16 @@ class SeparateAdminSessionMiddleware:
             request.session.cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
         else:
             request.session.cookie_name = settings.SESSION_COOKIE_NAME
+        return self.get_response(request)
+
+
+class AdminSessionCacheMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.path.startswith('/admin/'):
+            request.session.cache_alias = 'admin'
+        else:
+            request.session.cache_alias = 'default'
         return self.get_response(request)
