@@ -211,7 +211,7 @@ def logar(request):
                 # Se o usuário for um superusuário, redireciona ou bloqueia o acesso
                 if user.is_superuser:
                     messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página.")
-                    return redirect('/home')  # Substitua '/home' pela URL para onde deseja redirecionar
+                    return redirect('/auth/login/')  # Substitua '/home' pela URL para onde deseja redirecionar
 
                 # Autentica o usuário
                 user = authenticate(request, username=user.username, password=senha)
