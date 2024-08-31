@@ -80,6 +80,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'perfil.middleware.SeparateAdminSessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -87,8 +88,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'perfil.middleware.ProfileCompleteMiddleware',
-    'perfil.middleware.SeparateAdminSessionMiddleware',
-    'perfil.middleware.AdminSessionCacheMiddleware',
+    
+  
 ]
 
 
