@@ -22,13 +22,14 @@ from django.contrib.auth.tokens import default_token_generator
 from social_django.models import UserSocialAuth  # Importe o modelo UserSocialAuth
 from django.db import IntegrityError
 
-from django.core.exceptions import PermissionDenied
 
 def cadastro(request):
     # Redireciona o usuário para a página de divulgação se ele já estiver autenticado
+     # Redireciona o usuário para a página de divulgação se ele já estiver autenticado
     if request.user.is_authenticated:
         if request.user.is_superuser:
-            raise PermissionDenied("Superusuários não têm permissão para acessar esta página.")
+            messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página, faça o cadastro com outra conta e acesse.")
+            return redirect('/home')  
         return redirect('/divulgar/novo_pet')
 
     # Processa a requisição GET (exibe o formulário de cadastro)
@@ -206,11 +207,11 @@ def logar(request):
         try:
             # Tenta recuperar o usuário pelo email
             user = User.objects.get(email=email)
-            # Verifica se o usuário está ativo
             if user.is_active:
                 # Se o usuário for um superusuário, redireciona ou bloqueia o acesso
                 if user.is_superuser:
-                    raise PermissionDenied("Superusuários não têm permissão para acessar esta página.")
+                    messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página.")
+                    return redirect('/home')  # Substitua '/home' pela URL para onde deseja redirecionar
 
                 # Autentica o usuário
                 user = authenticate(request, username=user.username, password=senha)
