@@ -22,8 +22,7 @@ class ProfileCompleteMiddleware:
 
 from django.utils.deprecation import MiddlewareMixin
 from django.conf import settings
-
-from django.utils.deprecation import MiddlewareMixin
+from django.shortcuts import redirect
 
 class SeparateAdminSessionMiddleware(MiddlewareMixin):
     def process_request(self, request):
@@ -31,6 +30,12 @@ class SeparateAdminSessionMiddleware(MiddlewareMixin):
             request.session.cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
             request.session.engine = settings.ADMIN_SESSION_ENGINE
             request.session.cache_alias = settings.ADMIN_SESSION_CACHE_ALIAS
+            # Verificar se o sessionid do site está presente
+            if 'sessionid' in request.COOKIES:
+                # Se estiver presente, limpá-lo 
+                response = redirect('/admin/')
+                response.delete_cookie('sessionid')
+                return response
         else:
             request.session.cookie_name = settings.SESSION_COOKIE_NAME
             request.session.engine = settings.SESSION_ENGINE
@@ -39,5 +44,4 @@ class SeparateAdminSessionMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
         response.set_cookie(request.session.cookie_name, request.session.session_key)
         return response
-
 
