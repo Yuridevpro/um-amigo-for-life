@@ -75,12 +75,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-
+# Middleware do Django
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',  # Adicionei o SessionMiddleware aqui
-    'perfil.middleware.CustomSessionMiddleware',  # Este continua aqui
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -93,15 +92,38 @@ MIDDLEWARE = [
 
 import os
 
-# Configuração do cookie de sessão
-SESSION_COOKIE_NAME = 'app_sessionid'
-SESSION_COOKIE_DOMAIN = None  # Ou defina para o domínio correto se necessário
-SESSION_COOKIE_AGE = 1209600  # 2 semanas
-SESSION_COOKIE_EXPIRES = None
-SESSION_COOKIE_PATH = '/'
-SESSION_COOKIE_SECURE = True  # Ajuste para True em produção
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'Lax'
+# Usar as mesmas variáveis de ambiente para Redis usadas no teste
+REDIS_HOST = os.getenv('REDIS_HOST', 'red-cr92gud6l47c73bq8tk0')
+REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
+
+# Configuração do cache com Redis usando variáveis de ambiente e o formato de conexão do teste
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',  # URL do Redis para o cache principal
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+    },
+    'admin': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',  # URL do Redis para o cache do admin
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+    },
+}
+
+# Configuração de sessão para a aplicação principal
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+SESSION_COOKIE_NAME = os.getenv('SESSION_COOKIE_NAME', 'app_sessionid')  # Nome do cookie de sessão para a aplicação principal
+
+# Configuração de sessão para o Django Admin
+ADMIN_SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+ADMIN_SESSION_CACHE_ALIAS = 'admin'
+ADMIN_SESSION_COOKIE_NAME = os.getenv('ADMIN_SESSION_COOKIE_NAME', 'admin_sessionid')
+ADMIN_SESSION_COOKIE_PATH = '/admin/'
 
 
 
