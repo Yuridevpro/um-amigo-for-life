@@ -19,3 +19,34 @@ class ProfileCompleteMiddleware:
         return self.get_response(request)
 
 
+from django.conf import settings
+from django.utils.deprecation import MiddlewareMixin
+
+class CustomSessionMiddleware(MiddlewareMixin):
+    def process_response(self, request, response):
+        if request.path.startswith('/admin/'):
+            response.set_cookie(
+                settings.SESSION_COOKIE_NAME,
+                request.session.session_key,
+                domain=settings.SESSION_COOKIE_DOMAIN,
+                max_age=settings.SESSION_COOKIE_AGE,
+                expires=settings.SESSION_COOKIE_EXPIRES,
+                path=settings.SESSION_COOKIE_PATH,
+                secure=settings.SESSION_COOKIE_SECURE or None,
+                httponly=settings.SESSION_COOKIE_HTTPONLY or None,
+                samesite=settings.SESSION_COOKIE_SAMESITE,
+            )
+        else:
+            response.set_cookie(
+                'app_sessionid',
+                request.session.session_key,
+                domain=settings.SESSION_COOKIE_DOMAIN,
+                max_age=settings.SESSION_COOKIE_AGE,
+                expires=settings.SESSION_COOKIE_EXPIRES,
+                path=settings.SESSION_COOKIE_PATH,
+                secure=settings.SESSION_COOKIE_SECURE or None,
+                httponly=settings.SESSION_COOKIE_HTTPONLY or None,
+                samesite=settings.SESSION_COOKIE_SAMESITE,
+            )
+        return response
+
