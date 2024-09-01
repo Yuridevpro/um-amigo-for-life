@@ -91,8 +91,7 @@ MIDDLEWARE = [
 ]
 
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Utilize o banco de dados para as sessões
-SESSION_COOKIE_NAME = 'my_app_sessionid'  # Nome da cookie da sessão do seu app
+
 
 
 

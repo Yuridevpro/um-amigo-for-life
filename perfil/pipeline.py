@@ -31,25 +31,15 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
     try:
         existing_user = User.objects.get(email=email)
 
-        # Obtem todas as autenticações sociais associadas ao usuário
-        social_auths = UserSocialAuth.objects.filter(user=existing_user)
-
-        if social_auths.exists():
-            # Verifica se existe uma autenticação social associada ao usuário
-            associated_social_auth = social_auths.first()
-            if associated_social_auth and associated_social_auth.provider != backend.name:
-                messages.add_message(backend.strategy.request, constants.ERROR, 'Este email já está associado a uma conta com um provedor diferente.')
-                return render(backend.strategy.request, 'cadastro.html')
-
-        # Se o provedor associado for o mesmo, faz login normalmente
-        if social_auths.filter(provider=backend.name).exists():
+        # Verifica se a conta já está associada ao Facebook
+        if UserSocialAuth.objects.filter(user=existing_user, provider='facebook').exists():
+            login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
+            return {'user': existing_user, 'redirect': reverse('home')}
+        else:
+            # Associa o novo provedor à conta existente
+            backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
             login(backend.strategy.request, existing_user, backend='social_core.backends.' + backend.name)
             return {'user': existing_user, 'redirect': reverse('home')}
-
-        # Associa o novo provedor à conta existente
-        backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
-        login(backend.strategy.request, existing_user, backend='social_core.backends.' + backend.name)
-        return {'user': existing_user, 'redirect': reverse('home')}
 
     except User.DoesNotExist:
         # Cria um novo usuário e associa o provedor
