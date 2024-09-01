@@ -195,19 +195,27 @@ def confirmar_email(request, uidb64, token):
 
 
 def logar(request):
+    # Processa a requisição GET (exibe o formulário de login)
     if request.method == "GET":
         return render(request, 'login.html')
+
+    # Processa a requisição POST (trata o envio do formulário)
     elif request.method == "POST":
+        # Recupera os dados do formulário
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
         try:
+            # Tenta recuperar o usuário pelo email
             user = User.objects.get(email=email)
-            if user.is_active:
-                if user.is_superuser:
-                    messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página.")
-                    return redirect('/auth/login/')  # Redireciona para o login
+            
+            # Se o usuário for um superusuário, bloqueia o acesso ao app
+            if user.is_superuser:
+                messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página.")
+                return render(request, 'login.html')  # Fica na página de login com a mensagem de erro
 
+            # Se o usuário não for superusuário, autentica normalmente
+            if user.is_active:
                 user = authenticate(request, username=user.username, password=senha)
                 if user is not None:
                     login(request, user)
@@ -221,7 +229,6 @@ def logar(request):
         except User.DoesNotExist:
             messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
             return render(request, 'login.html')
-
 
 
 # Função para lidar com a solicitação de recuperação de senha
