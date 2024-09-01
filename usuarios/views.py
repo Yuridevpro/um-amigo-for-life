@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.models import User
 from perfil.models import UserProfile  # Importa o modelo UserProfile
 from django.contrib import messages
@@ -29,7 +29,7 @@ def cadastro(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
             messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página, faça o cadastro com outra conta e acesse.")
-            return redirect('/auth/login/')  
+            return HttpResponse('')  # ou return None
         return redirect('/divulgar/novo_pet')
 
     # Processa a requisição GET (exibe o formulário de cadastro)
@@ -211,7 +211,7 @@ def logar(request):
                 # Se o usuário for um superusuário, redireciona ou bloqueia o acesso
                 if user.is_superuser:
                     messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página.")
-                    return redirect('/auth/login/')  # Substitua '/home' pela URL para onde deseja redirecionar
+                    return HttpResponse('')  # ou return None
 
                 # Autentica o usuário
                 user = authenticate(request, username=user.username, password=senha)
@@ -231,7 +231,6 @@ def logar(request):
             # Mensagem de erro para email ou senha inválidos
             messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
             return render(request, 'login.html')
-
 
 # Função para lidar com a solicitação de recuperação de senha
 def esqueceu_senha(request):
