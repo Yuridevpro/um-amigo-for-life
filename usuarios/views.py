@@ -24,20 +24,19 @@ from django.db import IntegrityError
 
 
 def cadastro(request):
-    # Redireciona o usuário para a página de divulgação se ele já estiver autenticado
-     # Redireciona o usuário para a página de divulgação se ele já estiver autenticado
+    # Verifica se o usuário está autenticado
     if request.user.is_authenticated:
         if request.user.is_superuser:
-            messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página, faça o cadastro com outra conta e acesse.")
-            return redirect('/auth/login/')  
+            # Superusuário deve permanecer na página de administração
+            return redirect('/admin/')
         return redirect('/divulgar/novo_pet')
 
     # Processa a requisição GET (exibe o formulário de cadastro)
     if request.method == "GET":
         return render(request, 'cadastro.html')
+
     # Processa a requisição POST (trata o envio do formulário)
     elif request.method == "POST":
-        # Recupera os dados do formulário
         nome = request.POST.get('nome')
         sobrenome = request.POST.get('sobrenome')
         email = request.POST.get('email')
@@ -73,7 +72,6 @@ def cadastro(request):
         try:
             # Verifica se o email já existe no banco de dados
             if User.objects.filter(email=email).exists():
-                # Se o usuário já existe e está inativo, envia um novo email de ativação
                 user_inativo = User.objects.get(email=email, is_active=False)
                 token = get_random_string(length=32)
                 ativacao, created = Ativacao.objects.get_or_create(user=user_inativo)
@@ -82,12 +80,11 @@ def cadastro(request):
                 ativacao.save()
 
                 current_site = get_current_site(request)
-                site_name = current_site.name
                 domain = current_site.domain
                 uidb64 = urlsafe_base64_encode(force_bytes(user_inativo.pk))
                 link = f'http://{domain}/auth/confirmar_email/{uidb64}/{token}'
 
-                subject = f'Confirmação de Cadastro - {site_name}'
+                subject = 'Confirmação de Cadastro'
                 message_html = render_to_string(
                     'email_confirmacao.html',
                     {
@@ -108,14 +105,12 @@ def cadastro(request):
                 messages.add_message(request, constants.SUCCESS, 'Enviamos um novo email de confirmação para seu endereço. Por favor, verifique sua caixa de entrada ou spam.')
                 return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
             else:
-                # Cria um novo usuário com o email como username
                 user = User.objects.create_user(
                     username=email,
                     email=email,
                     password=senha,
                     is_active=False,
                 )
-                # Cria o perfil do usuário com campos adicionais
                 UserProfile.objects.create(
                     user=user,
                     telefone=telefone,
@@ -127,7 +122,6 @@ def cadastro(request):
                     email=email
                 )
 
-                # Gera um token de ativação e salva na tabela Ativacao
                 token = get_random_string(length=32)
                 ativacao = Ativacao.objects.create(
                     user=user,
@@ -135,14 +129,12 @@ def cadastro(request):
                     confirmation_token_expiration=timezone.now() + timedelta(days=1)
                 )
 
-                # Gera o link de ativação e envia o email de confirmação
                 current_site = get_current_site(request)
-                site_name = current_site.name
                 domain = current_site.domain
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
                 link = f'http://{domain}/auth/confirmar_email/{uidb64}/{token}'
 
-                subject = f'Confirmação de Cadastro - {site_name}'
+                subject = 'Confirmação de Cadastro'
                 message_html = render_to_string(
                     'email_confirmacao.html',
                     {
@@ -163,9 +155,9 @@ def cadastro(request):
                 messages.add_message(request, constants.SUCCESS, 'Enviamos um email para confirmar seu cadastro. Clique no link para finalizar.')
                 return redirect('/auth/login')
         except Exception as e:
-            # Captura e exibe mensagens de erro
             messages.add_message(request, constants.ERROR, 'Erro ao cadastrar usuário: ' + str(e))
             return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
+
 
 
 # Função para confirmar o email do usuário
@@ -201,30 +193,27 @@ def logar(request):
 
     # Processa a requisição POST (trata o envio do formulário)
     elif request.method == "POST":
-        # Recupera os dados do formulário
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
         try:
-            # Tenta recuperar o usuário pelo email
             user = User.objects.get(email=email)
-            
-            # Se o usuário for um superusuário, bloqueia o acesso ao app
-            if user.is_superuser:
-                messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página.")
-                return render(request, 'login.html')  # Fica na página de login com a mensagem de erro
 
-            # Se o usuário não for superusuário, autentica normalmente
-            if user.is_active:
-                user = authenticate(request, username=user.username, password=senha)
-                if user is not None:
-                    login(request, user)
-                    return redirect('/divulgar/novo_pet')
-                else:
-                    messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
-                    return render(request, 'login.html')
-            else:
+            if not user.is_active:
                 messages.add_message(request, constants.ERROR, 'Conta não ativada')
+                return render(request, 'login.html')
+
+            user = authenticate(request, username=user.username, password=senha)
+            if user is not None:
+                login(request, user)
+                if user.is_superuser:
+                    # Redireciona superusuários para a administração do Django
+                    return redirect('/admin/')
+                else:
+                    # Redireciona usuários normais para a página do app
+                    return redirect('/divulgar/novo_pet')
+            else:
+                messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
                 return render(request, 'login.html')
         except User.DoesNotExist:
             messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
