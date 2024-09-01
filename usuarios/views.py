@@ -24,11 +24,8 @@ from django.db import IntegrityError
 
 
 def cadastro(request):
-    # Verifica se o usuário está autenticado
     if request.user.is_authenticated:
-        if request.user.is_superuser:
-            # Superusuário deve permanecer na página de administração
-            return redirect('/admin/')
+        # Remova a verificação que bloqueia superusuários
         return redirect('/divulgar/novo_pet')
 
     # Processa a requisição GET (exibe o formulário de cadastro)
@@ -187,37 +184,29 @@ def confirmar_email(request, uidb64, token):
 
 
 def logar(request):
-    # Processa a requisição GET (exibe o formulário de login)
     if request.method == "GET":
         return render(request, 'login.html')
-
-    # Processa a requisição POST (trata o envio do formulário)
     elif request.method == "POST":
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
         try:
             user = User.objects.get(email=email)
-
-            if not user.is_active:
-                messages.add_message(request, constants.ERROR, 'Conta não ativada')
-                return render(request, 'login.html')
-
-            user = authenticate(request, username=user.username, password=senha)
-            if user is not None:
-                login(request, user)
-                if user.is_superuser:
-                    # Redireciona superusuários para a administração do Django
-                    return redirect('/admin/')
-                else:
-                    # Redireciona usuários normais para a página do app
+            if user.is_active:
+                user = authenticate(request, username=user.username, password=senha)
+                if user is not None:
+                    login(request, user)
                     return redirect('/divulgar/novo_pet')
+                else:
+                    messages.add_message(request, messages.ERROR, 'Email ou senha inválidos')
+                    return render(request, 'login.html')
             else:
-                messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
+                messages.add_message(request, messages.ERROR, 'Conta não ativada')
                 return render(request, 'login.html')
         except User.DoesNotExist:
-            messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
+            messages.add_message(request, messages.ERROR, 'Email ou senha inválidos')
             return render(request, 'login.html')
+
 
 
 # Função para lidar com a solicitação de recuperação de senha
