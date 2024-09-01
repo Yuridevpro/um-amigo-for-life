@@ -18,4 +18,16 @@ class ProfileCompleteMiddleware:
                     return redirect(reverse('editar_perfil'))
         return self.get_response(request)
 
+from django.shortcuts import redirect
+from django.utils.deprecation import MiddlewareMixin
 
+class AdminSessionMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        if request.path.startswith('/admin'):
+            # Se o usuário está na área administrativa, use a sessão padrão do Django
+            request.session.session_key = None
+        else:
+            # Se o usuário está no seu aplicativo, use a sessão personalizada
+            request.session.session_key = request.COOKIES.get('my_app_sessionid')
+
+        return None  # Continue o processamento da requisição

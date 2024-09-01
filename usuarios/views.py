@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from perfil.models import UserProfile  # Importa o modelo UserProfile
 from django.contrib import messages
@@ -29,7 +29,7 @@ def cadastro(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
             messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página, faça o cadastro com outra conta e acesse.")
-            return HttpResponse('')  # ou return None
+            return redirect('/auth/login/')  
         return redirect('/divulgar/novo_pet')
 
     # Processa a requisição GET (exibe o formulário de cadastro)
@@ -195,42 +195,34 @@ def confirmar_email(request, uidb64, token):
 
 
 def logar(request):
-    # Processa a requisição GET (exibe o formulário de login)
     if request.method == "GET":
         return render(request, 'login.html')
-    # Processa a requisição POST (trata o envio do formulário)
     elif request.method == "POST":
-        # Recupera os dados do formulário
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
         try:
-            # Tenta recuperar o usuário pelo email
             user = User.objects.get(email=email)
             if user.is_active:
-                # Se o usuário for um superusuário, redireciona ou bloqueia o acesso
                 if user.is_superuser:
                     messages.add_message(request, messages.ERROR, "Superusuários não têm permissão para acessar esta página.")
-                    return HttpResponse('')  # ou return None
+                    return redirect('/auth/login/')  # Redireciona para o login
 
-                # Autentica o usuário
                 user = authenticate(request, username=user.username, password=senha)
-                # Se a autenticação for bem-sucedida, loga o usuário
                 if user is not None:
                     login(request, user)
                     return redirect('/divulgar/novo_pet')
                 else:
-                    # Mensagem de erro para email ou senha inválidos
                     messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
                     return render(request, 'login.html')
             else:
-                # Mensagem de erro para conta não ativada
                 messages.add_message(request, constants.ERROR, 'Conta não ativada')
                 return render(request, 'login.html')
         except User.DoesNotExist:
-            # Mensagem de erro para email ou senha inválidos
             messages.add_message(request, constants.ERROR, 'Email ou senha inválidos')
             return render(request, 'login.html')
+
+
 
 # Função para lidar com a solicitação de recuperação de senha
 def esqueceu_senha(request):
