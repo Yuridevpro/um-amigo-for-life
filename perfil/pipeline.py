@@ -26,18 +26,7 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
     email = details.get('email') or backend.strategy.session_get('email')
 
     if not email:
-        # Se o endereço de e-mail não for fornecido, tenta obter o usuário pelo ID do Facebook
-        try:
-            existing_user = User.objects.get(social_auth__provider='facebook', social_auth__uid=details.get('uid'))
-            return {'user': existing_user, 'redirect': reverse('home')}
-        except User.DoesNotExist:
-            # Se o usuário não existir, cria um novo usuário e associa o provedor
-            user = User.objects.create_user(
-                username=details.get('username'),
-                email=None
-            )
-            backend.strategy.storage.user.create_social_auth(user=user, provider='facebook', uid=details.get('uid'))
-            return {'user': user, 'redirect': reverse('editar_perfil')}
+        return {'user': None, 'redirect': reverse('editar_perfil')}
 
     try:
         existing_user = User.objects.get(email=email)
@@ -46,16 +35,14 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         social_auths = UserSocialAuth.objects.filter(user=existing_user)
 
         if social_auths.exists():
-            # Verifica se existe uma autenticação social associada ao usuário
-            associated_social_auth = social_auths.first()
-            if associated_social_auth and associated_social_auth.provider != backend.name:
-                messages.add_message(backend.strategy.request, constants.ERROR, 'Este email já está associado a uma conta com um provedor diferente.')
-                return render(backend.strategy.request, 'cadastro.html')
+            associated_social_auth = social_auths.filter(provider=backend.name).first()
+            if associated_social_auth:
+                login(backend.strategy.request, existing_user, backend='social_core.backends.' + backend.name)
+                return {'user': existing_user, 'redirect': reverse('home')}
 
-        # Se o provedor associado for o mesmo, faz login normalmente
-        if social_auths.filter(provider=backend.name).exists():
-            login(backend.strategy.request, existing_user, backend='social_core.backends.' + backend.name)
-            return {'user': existing_user, 'redirect': reverse('home')}
+            # Caso o usuário já tenha uma associação com outro provedor, retorna erro
+            messages.add_message(backend.strategy.request, constants.ERROR, 'Este email já está associado a uma conta com um provedor diferente.')
+            return redirect(reverse('login'))
 
         # Associa o novo provedor à conta existente
         backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
@@ -72,3 +59,4 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         backend.strategy.storage.user.create_social_auth(user=user, provider=backend.name, uid=details.get('uid'))
         login(backend.strategy.request, user, backend='social_core.backends.' + backend.name)
         return {'user': user, 'redirect': reverse('editar_perfil')}
+
