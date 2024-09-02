@@ -22,6 +22,9 @@ def create_profile(strategy, details, user=None, *args, **kwargs):
 
     return {'user': user}
 
+from django.contrib.auth.models import User
+from social_django.models import UserSocialAuth
+
 def associate_by_email(backend, details, user=None, *args, **kwargs):
     email = details.get('email') or backend.strategy.session_get('email')
 
@@ -29,37 +32,29 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         return {'user': None, 'redirect': reverse('editar_perfil')}
 
     try:
+        # Verifica se o usuário já existe com o email atual
         existing_user = User.objects.get(email=email)
 
-        # Obtem todas as autenticações sociais associadas ao usuário
-        social_auths = UserSocialAuth.objects.filter(user=existing_user)
-
-        if social_auths.exists():
-            associated_social_auth = social_auths.filter(provider=backend.name).first()
-            if associated_social_auth:
-                login(backend.strategy.request, existing_user, backend='social_core.backends.' + backend.name)
-                return {'user': existing_user, 'redirect': reverse('home')}
-
-            # Caso o usuário já tenha uma associação com outro provedor, retorna erro
-            messages.add_message(backend.strategy.request, constants.ERROR, 'Este email já está associado a uma conta com um provedor diferente.')
-            return redirect(reverse('login'))
-
-        # Evita criar associação duplicada para o mesmo provedor
-        if not social_auths.filter(provider=backend.name).exists():
-            backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
-
-        login(backend.strategy.request, existing_user, backend='social_core.backends.' + backend.name)
-        return {'user': existing_user, 'redirect': reverse('home')}
+        # Verifica se o usuário já está associado ao Facebook
+        if UserSocialAuth.objects.filter(user=existing_user, provider='facebook').exists():
+            # Se o usuário já estiver associado, faça login normalmente
+            login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
+            return {'user': existing_user, 'redirect': reverse('home')}
+        else:
+            # Se o usuário existir, mas não estiver associado ao Facebook, associe-o
+            backend.strategy.storage.user.create_social_auth(user=existing_user, provider='facebook', uid=details.get('uid'))
+            login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
+            return {'user': existing_user, 'redirect': reverse('home')}
 
     except User.DoesNotExist:
-        # Cria um novo usuário e associa o provedor
+        # Se o usuário não existir, crie-o e associe-o ao Facebook
         user = User.objects.create_user(
             username=email,
             email=email,
             password=None
         )
-        backend.strategy.storage.user.create_social_auth(user=user, provider=backend.name, uid=details.get('uid'))
-        login(backend.strategy.request, user, backend='social_core.backends.' + backend.name)
-        return {'user': user, 'redirect': reverse('editar_perfil')}
+        backend.strategy.storage.user.create_social_auth(user=user, provider='facebook', uid=details.get('uid'))
+        login(backend.strategy.request, user, backend='social_core.backends.facebook.FacebookOAuth2')
+        return {'user': user, 'redirect': reverse('editar_perfil')} 
 
 
