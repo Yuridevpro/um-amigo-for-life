@@ -44,8 +44,10 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
             messages.add_message(backend.strategy.request, constants.ERROR, 'Este email já está associado a uma conta com um provedor diferente.')
             return redirect(reverse('login'))
 
-        # Associa o novo provedor à conta existente
-        backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
+        # Evita criar associação duplicada para o mesmo provedor
+        if not social_auths.filter(provider=backend.name).exists():
+            backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
+
         login(backend.strategy.request, existing_user, backend='social_core.backends.' + backend.name)
         return {'user': existing_user, 'redirect': reverse('home')}
 
