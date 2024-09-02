@@ -60,3 +60,4 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         login(backend.strategy.request, user, backend='social_core.backends.' + backend.name)
         return {'user': user, 'redirect': reverse('editar_perfil')}
 
+
