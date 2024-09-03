@@ -31,10 +31,20 @@ from .models import UserProfile
 from social_core.exceptions import AuthAlreadyAssociated
 
 def associate_by_email(backend, details, user=None, *args, **kwargs):
+    # Obtém o e-mail dos detalhes fornecidos pelo backend ou da sessão
     email = details.get('email') or backend.strategy.session_get('email')
-    
+
     if not email:
-        # Redireciona para a edição de perfil para preencher o e-mail
+        # Se o e-mail não estiver disponível, tente obtê-lo a partir do perfil do usuário
+        if user:
+            try:
+                user_profile = UserProfile.objects.get(user=user)
+                email = user_profile.email
+            except UserProfile.DoesNotExist:
+                pass
+
+    if not email:
+        # Se o e-mail ainda não estiver disponível, redireciona para o perfil para que o usuário possa fornecer o e-mail
         return {'user': None, 'redirect': reverse('editar_perfil')}
 
     try:
@@ -49,34 +59,34 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
             # Verifica se o usuário já está associado a este provedor
             social_auth = backend.strategy.storage.user.get_social_auth_for_user(existing_user)
             if social_auth and social_auth.filter(provider=backend.name).exists():
-                # Se já existe uma associação com este provedor, loga o usuário
-                login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
-                return {'user': existing_user, 'redirect': reverse('home')}
-            elif social_auth and social_auth.filter(provider='facebook').exists():
-                # Se o usuário já está associado ao Facebook, faça login normalmente
-                login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
+                # Se já existe uma associação com este provedor, loga o usuário com o backend correto
+                login(backend.strategy.request, existing_user, backend=backend.name)
                 return {'user': existing_user, 'redirect': reverse('home')}
             else:
                 # Associa o novo provedor ao usuário existente
                 backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
-                login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
+                login(backend.strategy.request, existing_user, backend=backend.name)
                 return {'user': existing_user, 'redirect': reverse('home')}
         
         except AuthAlreadyAssociated:
             # Captura a exceção caso o email já esteja associado a outro provedor
             messages.add_message(backend.strategy.request, constants.ERROR, 'Este e-mail já está associado a outro provedor.')
             return render(backend.strategy.request, 'cadastro.html')
-
+    
     except User.DoesNotExist:
-        # Cria o usuário se não existir
-        user = User.objects.create_user(
-            username=email,  # Use o email como username
-            email=email,
-            password=None
-        )
-        # Loga o usuário e redireciona para editar perfil
-        login(backend.strategy.request, user, backend='social_core.backends.facebook.FacebookOAuth2')
-        return {'user': user, 'redirect': reverse('editar_perfil')}
+        # Se o usuário não existir, crie um novo usuário
+        if email:
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=None
+            )
+            backend.strategy.storage.user.create_social_auth(user=user, provider='facebook', uid=details.get('uid'))
+            login(backend.strategy.request, user, backend='social_core.backends.facebook.FacebookOAuth2')
+            return {'user': user, 'redirect': reverse('editar_perfil')}
+        else:
+            # Se o e-mail não estiver disponível, redirecione para o perfil
+            return {'user': None, 'redirect': reverse('editar_perfil')}
 
 
 
