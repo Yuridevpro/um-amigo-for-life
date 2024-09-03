@@ -3,24 +3,41 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib import messages
-from django.contrib.messages import constants
 from social_django.models import UserSocialAuth
 from .models import UserProfile
 
 def create_profile(strategy, details, user=None, *args, **kwargs):
     if user:
         try:
+            # Verifica se o perfil do usuário já existe
             profile = UserProfile.objects.get(user=user)
-            # Como o middleware já lida com a verificação do perfil, você pode omitir essa verificação aqui.
             login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
             return redirect(reverse('home'))
         except UserProfile.DoesNotExist:
+            # Se o perfil não existir, cria um novo perfil
             profile = UserProfile(user=user, email=details.get('email'))
             profile.save()
             login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
             return redirect(reverse('editar_perfil'))
 
+    # Se o usuário não estiver autenticado ou o e-mail estiver ausente
+    email = details.get('email')
+    if email:
+        try:
+            # Verifica se o e-mail já está em uso por outro usuário
+            existing_user = User.objects.get(email=email)
+            messages.error(strategy.request, 'O e-mail já está em uso.')
+            return redirect(reverse('login'))  # Redirecione para a página de login ou outra página de sua escolha
+        except User.DoesNotExist:
+            # Se o e-mail não estiver em uso, crie o perfil normalmente
+            user = User.objects.create_user(username=email, email=email, password=None)
+            profile = UserProfile(user=user, email=email)
+            profile.save()
+            login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
+            return redirect(reverse('editar_perfil'))
+    
     return {'user': user}
+
 
 from django.contrib.auth import login
 from django.contrib.auth.models import User
