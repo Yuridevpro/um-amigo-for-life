@@ -1,31 +1,35 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib import messages
-from django.contrib.messages import constants
 from social_django.models import UserSocialAuth
 from .models import UserProfile
 
 def create_profile(strategy, details, user=None, *args, **kwargs):
     if user:
-        # Verifica se o usuário já tem um perfil
+        email = details.get('email')
+        
+        if email:
+            # Verifica se o email já está em uso por outro usuário
+            try:
+                existing_user = User.objects.get(email=email)
+                if existing_user != user:
+                    # Se o email já está em uso por outro usuário, mostra uma mensagem de erro
+                    messages.add_message(strategy.request, messages.ERROR, 'Este e-mail já está em uso.')
+                    return redirect(reverse('login'))
+            except User.DoesNotExist:
+                pass
+        
         try:
             profile = UserProfile.objects.get(user=user)
             login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
             return redirect(reverse('home'))
         except UserProfile.DoesNotExist:
-            # Verifica se o email do Google já está associado a uma conta
-            try:
-                existing_user = User.objects.get(email=details.get('email'))
-                messages.add_message(strategy.request, constants.ERROR, 'O email já está em uso. Por favor, faça login com sua conta existente ou use outro email.')
-                return {'user': None}
-            except User.DoesNotExist:
-                # Cria o perfil do usuário
-                profile = UserProfile(user=user, email=details.get('email'))
-                profile.save()
-                login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
-                return redirect(reverse('editar_perfil'))
+            profile = UserProfile(user=user, email=email)
+            profile.save()
+            login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
+            return redirect(reverse('editar_perfil'))
 
     return {'user': user}
 
