@@ -49,13 +49,17 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
             # Verifica se o usuário já está associado a este provedor
             social_auth = backend.strategy.storage.user.get_social_auth_for_user(existing_user)
             if social_auth and social_auth.filter(provider=backend.name).exists():
-                # Se já existe uma associação com este provedor, loga o usuário com o backend correto
-                login(backend.strategy.request, existing_user, backend=backend.name)
+                # Se já existe uma associação com este provedor, loga o usuário
+                login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
+                return {'user': existing_user, 'redirect': reverse('home')}
+            elif social_auth and social_auth.filter(provider='facebook').exists():
+                # Se o usuário já está associado ao Facebook, faça login normalmente
+                login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
                 return {'user': existing_user, 'redirect': reverse('home')}
             else:
                 # Associa o novo provedor ao usuário existente
                 backend.strategy.storage.user.create_social_auth(user=existing_user, provider=backend.name, uid=details.get('uid'))
-                login(backend.strategy.request, existing_user, backend=backend.name)
+                login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
                 return {'user': existing_user, 'redirect': reverse('home')}
         
         except AuthAlreadyAssociated:
@@ -71,9 +75,8 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
             password=None
         )
         # Loga o usuário e redireciona para editar perfil
-        login(backend.strategy.request, user, backend=backend.name)
+        login(backend.strategy.request, user, backend='social_core.backends.facebook.FacebookOAuth2')
         return {'user': user, 'redirect': reverse('editar_perfil')}
-
 
 
 
