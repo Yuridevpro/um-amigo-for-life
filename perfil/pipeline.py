@@ -1,12 +1,14 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages import constants
 from social_django.models import UserSocialAuth
+from social_core.exceptions import AuthAlreadyAssociated
 from .models import UserProfile
 
+# Função para criar ou atualizar o perfil do usuário
 def create_profile(strategy, details, user=None, *args, **kwargs):
     if user:
         try:
@@ -22,12 +24,7 @@ def create_profile(strategy, details, user=None, *args, **kwargs):
 
     return {'user': user}
 
-from django.shortcuts import render, reverse
-from django.contrib.auth import login
-from django.contrib import messages
-from social_core.exceptions import AuthAlreadyAssociated
-from social_core.backends.google import GoogleOAuth2
-
+# Função para associar um e-mail a um usuário existente ou criar um novo usuário
 def associate_by_email(backend, details, user=None, *args, **kwargs):
     email = details.get('email') or backend.strategy.session_get('email')
     
@@ -40,7 +37,7 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
 
         if user and user.pk != existing_user.pk:
             # Se o e-mail já está em uso por outro usuário e é um usuário diferente
-            messages.add_message(backend.strategy.request, messages.ERROR, 'Este e-mail já está em uso por outro usuário.')
+            messages.add_message(backend.strategy.request, constants.ERROR, 'Este e-mail já está em uso por outro usuário.')
             return render(backend.strategy.request, 'cadastro.html')
 
         try:
@@ -58,13 +55,13 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         
         except AuthAlreadyAssociated:
             # Captura a exceção caso o e-mail já esteja associado a outro provedor
-            messages.add_message(backend.strategy.request, messages.ERROR, 'Este e-mail já está associado a outro provedor.')
+            messages.add_message(backend.strategy.request, constants.ERROR, 'Este e-mail já está associado a outro provedor.')
             return render(backend.strategy.request, 'cadastro.html')
 
     except User.DoesNotExist:
         # Cria o usuário se não existir
         user = User.objects.create_user(
-            username=email,  # Use o email como username
+            username=email,  # Use o e-mail como username
             email=email,
             password=None
         )
