@@ -11,14 +11,18 @@ def create_profile(strategy, details, user=None, *args, **kwargs):
     if user:
         try:
             profile = UserProfile.objects.get(user=user)
-            # Como o middleware já lida com a verificação do perfil, você pode omitir essa verificação aqui.
+            # O perfil já existe, apenas faz login e redireciona
             login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
             return redirect(reverse('home'))
         except UserProfile.DoesNotExist:
+            # O perfil não existe, cria um novo
             profile = UserProfile(user=user, email=details.get('email'))
             profile.save()
             login(strategy.request, user, backend='social_core.backends.google.GoogleOAuth2')
             return redirect(reverse('editar_perfil'))
+
+    return {'user': user}
+
 
     return {'user': user}
 
@@ -32,11 +36,11 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         return {'user': None, 'redirect': reverse('editar_perfil')}
 
     try:
-        # Verifica se o usuário já existe com o email atual
         existing_user = User.objects.get(email=email)
 
         # Verifica se o usuário já está associado ao Facebook
-        if UserSocialAuth.objects.filter(user=existing_user, provider='facebook').exists():
+        social_auth = UserSocialAuth.objects.filter(user=existing_user, provider='facebook').first()
+        if social_auth:
             # Se o usuário já estiver associado, faça login normalmente
             login(backend.strategy.request, existing_user, backend='social_core.backends.facebook.FacebookOAuth2')
             return {'user': existing_user, 'redirect': reverse('home')}
@@ -55,6 +59,5 @@ def associate_by_email(backend, details, user=None, *args, **kwargs):
         )
         backend.strategy.storage.user.create_social_auth(user=user, provider='facebook', uid=details.get('uid'))
         login(backend.strategy.request, user, backend='social_core.backends.facebook.FacebookOAuth2')
-        return {'user': user, 'redirect': reverse('editar_perfil')} 
-
+        return {'user': user, 'redirect': reverse('editar_perfil')}
 
