@@ -25,14 +25,11 @@ from django.db import IntegrityError
 
 def cadastro(request):
     if request.user.is_authenticated:
-        # Remova a verificação que bloqueia superusuários
         return redirect('/divulgar/novo_pet')
 
-    # Processa a requisição GET (exibe o formulário de cadastro)
     if request.method == "GET":
         return render(request, 'cadastro.html')
 
-    # Processa a requisição POST (trata o envio do formulário)
     elif request.method == "POST":
         nome = request.POST.get('nome')
         sobrenome = request.POST.get('sobrenome')
@@ -44,63 +41,66 @@ def cadastro(request):
         estado_nome = request.POST.get('estado_nome')
         cidade_nome = request.POST.get('cidade_nome')
 
-        # Valida se todos os campos foram preenchidos
         if not nome or not sobrenome or not email or not senha or not confirmar_senha or not telefone or not estado_id or not cidade_nome:
             messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
             return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
 
-        # Valida se as senhas coincidem
         if senha != confirmar_senha:
             messages.add_message(request, constants.ERROR, 'As senhas não coincidem')
             return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
 
-        # Valida o formato do email
         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(email_pattern, email):
             messages.add_message(request, constants.ERROR, 'Email inválido')
             return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
 
-        # Valida a complexidade da senha
         senha_pattern = r'^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$'
         if not re.match(senha_pattern, senha):
             messages.add_message(request, constants.ERROR, 'Senha deve ter pelo menos 8 caracteres, com letras e números')
             return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
 
         try:
-            # Verifica se o email já existe no banco de dados
             if User.objects.filter(email=email).exists():
-                user_inativo = User.objects.get(email=email, is_active=False)
-                token = get_random_string(length=32)
-                ativacao, created = Ativacao.objects.get_or_create(user=user_inativo)
-                ativacao.confirmation_token = token
-                ativacao.confirmation_token_expiration = timezone.now() + timedelta(days=1)
-                ativacao.save()
+                # Verifica se o email já está em uso por um usuário ativo ou inativo
+                user_inativo = User.objects.filter(email=email, is_active=False).first()
+                if user_inativo:
+                    # Reenvia e-mail de confirmação para um usuário inativo
+                    token = get_random_string(length=32)
+                    ativacao, created = Ativacao.objects.get_or_create(user=user_inativo)
+                    ativacao.confirmation_token = token
+                    ativacao.confirmation_token_expiration = timezone.now() + timedelta(days=1)
+                    ativacao.save()
 
-                current_site = get_current_site(request)
-                domain = current_site.domain
-                uidb64 = urlsafe_base64_encode(force_bytes(user_inativo.pk))
-                link = f'http://{domain}/auth/confirmar_email/{uidb64}/{token}'
+                    current_site = get_current_site(request)
+                    domain = current_site.domain
+                    uidb64 = urlsafe_base64_encode(force_bytes(user_inativo.pk))
+                    link = f'http://{domain}/auth/confirmar_email/{uidb64}/{token}'
 
-                subject = 'Confirmação de Cadastro'
-                message_html = render_to_string(
-                    'email_confirmacao.html',
-                    {
-                        'user': user_inativo,
-                        'domain': domain,
-                        'uidb64': uidb64,
-                        'token': token,
-                        'link': link,
-                    }
-                )
-                from_email = settings.EMAIL_HOST_USER
-                recipient_list = [email]
+                    subject = 'Confirmação de Cadastro'
+                    message_html = render_to_string(
+                        'email_confirmacao.html',
+                        {
+                            'user': user_inativo,
+                            'domain': domain,
+                            'uidb64': uidb64,
+                            'token': token,
+                            'link': link,
+                        }
+                    )
+                    from_email = settings.EMAIL_HOST_USER
+                    recipient_list = [email]
 
-                email = EmailMultiAlternatives(subject, '', from_email, recipient_list)
-                email.attach_alternative(message_html, "text/html")
-                email.send(fail_silently=False)
+                    email = EmailMultiAlternatives(subject, '', from_email, recipient_list)
+                    email.attach_alternative(message_html, "text/html")
+                    email.send(fail_silently=False)
 
-                messages.add_message(request, constants.SUCCESS, 'Enviamos um novo email de confirmação para seu endereço. Por favor, verifique sua caixa de entrada ou spam.')
-                return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
+                    messages.add_message(request, constants.SUCCESS, 'Enviamos um novo email de confirmação para seu endereço. Por favor, verifique sua caixa de entrada ou spam.')
+                    return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
+                else:
+                    # E-mail já está em uso por um usuário ativo
+                    messages.add_message(request, constants.ERROR, 'Este e-mail já está em uso. Tente com um e-mail diferente.')
+                    return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
+
             else:
                 user = User.objects.create_user(
                     username=email,
@@ -154,6 +154,7 @@ def cadastro(request):
         except Exception as e:
             messages.add_message(request, constants.ERROR, 'Erro ao cadastrar usuário: ' + str(e))
             return render(request, 'cadastro.html', {'nome': nome, 'sobrenome': sobrenome, 'email': email, 'telefone': telefone, 'estado_id': estado_id, 'cidade_nome': cidade_nome})
+
 
 
 
