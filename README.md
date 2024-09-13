@@ -22,14 +22,14 @@ O projeto visa:
 - *Criação de  depoimentos*: aqui o usuario relata a importancia de ter adotado um pet pra sua vida  atraves do site.
   
 ## Como Funciona
-   *Google e Facebook*: Os usuários podem se registrar e fazer login utilizando suas contas do Google ou Facebook.
-   *Preenchimento Manual do Formulário*: Usuários podem optar por preencher um formulário manualmente. Após o registro,
+- *Google e Facebook*: Os usuários podem se registrar e fazer login utilizando suas contas do Google ou Facebook.
+-  *Preenchimento Manual do Formulário*: Usuários podem optar por preencher um formulário manualmente. Após o registro,
                                            um link de confirmação é enviado para o e-mail fornecido, e o usuário deve clicar nesse link para ativar sua conta.
-   *esqueceu senha*: apos o usuario clicar no link, preencher seu gmail um link de renovacao de senha é enviado para o e-mail fornecido.
-2. *Cadastro de Animais*: Donos de animais preenchem um formulário com detalhes sobre o animal e adicionam fotos.
-3. *Busca e Filtro*: Usuários interessados em adotar podem buscar e filtrar animais com base em suas preferências.
-4. *Perfil do Usuário*: Os adotantes podem criar um perfil detalhado para ajudar a combinar com o animal ideal.
-5. *Contato*: Através do site, os usuários podem enviar mensagens para agendar visitas e iniciar o processo de adoção.
+- *esqueceu senha*: apos o usuario clicar no link, preencher seu gmail um link de renovacao de senha é enviado para o e-mail fornecido.
+- *Cadastro de Animais*: Donos de animais preenchem um formulário com detalhes sobre o animal e adicionam fotos.
+- *Busca e Filtro*: Usuários interessados em adotar podem buscar e filtrar animais com base em suas preferências.
+- *Perfil do Usuário*: Os adotantes podem criar um perfil detalhado para ajudar a combinar com o animal ideal.
+- *Contato*: Através do site, os usuários podem enviar mensagens para agendar visitas e iniciar o processo de adoção.
 
 ## Tecnologias Utilizadas
 
@@ -53,4 +53,4 @@ Para mais informações ou dúvidas, entre em contato com:
 - **Email**: yuridev524@gmail.com
 - **telefone**:  55 (85) 984680748
 - **GitHub**: https://github.com/Yuridevpro
-  
+- **Linkedin**: https://www.linkedin.com/in/yuri-silva-a5b9b3299/
